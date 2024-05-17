@@ -8,6 +8,7 @@ import com.toast.apocalypse.common.event.EntityEvents;
 import com.toast.apocalypse.common.misc.DestroyerExplosionCalculator;
 import com.toast.apocalypse.common.util.RainDamageTickHelper;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -50,7 +51,7 @@ public class CommonConfigReloadListener {
         PlayerDifficultyManager.SLEEP_PENALTY = COMMON.getSleepPenalty();
 
         List<ResourceKey<Level>> list = new ArrayList<>();
-        COMMON.getDifficultyPenaltyDimensions().forEach((s -> list.add(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(s)))));
+        COMMON.getDifficultyPenaltyDimensions().forEach((s -> list.add(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(s)))));
         PlayerDifficultyManager.DIMENSION_PENALTY_LIST = list;
         PlayerDifficultyManager.DIMENSION_PENALTY = COMMON.getDimensionPenalty();
         PlayerDifficultyManager.ACID_RAIN_CHANCE = COMMON.getAcidRainChance();

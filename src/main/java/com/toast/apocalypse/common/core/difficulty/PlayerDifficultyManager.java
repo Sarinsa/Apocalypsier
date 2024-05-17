@@ -12,6 +12,7 @@ import com.toast.apocalypse.common.triggers.ApocalypseTriggers;
 import com.toast.apocalypse.common.util.CapabilityHelper;
 import com.toast.apocalypse.common.util.RainDamageTickHelper;
 import com.toast.apocalypse.common.util.References;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -118,6 +119,15 @@ public final class PlayerDifficultyManager {
         return 0;
     }
 
+    public static long getNearestPlayerDifficulty(LevelAccessor level, BlockPos pos) {
+        Player player = level.getNearestPlayer(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, Double.MAX_VALUE, false);
+
+        if (player != null) {
+            return CapabilityHelper.getPlayerDifficulty(player);
+        }
+        return 0;
+    }
+
     public boolean isFullMoon() {
         ServerLevel world = server.overworld();
         return world.dimensionType().moonPhase(world.getDayTime()) == 0;
@@ -164,7 +174,7 @@ public final class PlayerDifficultyManager {
         if (!event.getEntity().getCommandSenderWorld().isClientSide) {
             ServerPlayer player = (ServerPlayer) event.getEntity();
             ServerLevel overworld = server.overworld();
-            ServerLevel playerLevel = player.getLevel();
+            ServerLevel playerLevel = player.serverLevel();
 
             NetworkHelper.sendUpdatePlayerDifficulty(player);
             NetworkHelper.sendUpdatePlayerDifficultyMult(player);
@@ -188,7 +198,7 @@ public final class PlayerDifficultyManager {
         if (!event.getEntity().getCommandSenderWorld().isClientSide) {
             ServerPlayer player = (ServerPlayer) event.getEntity();
             saveEventData(player);
-            playerEvents.get(player.getUUID()).stop(player.getLevel());
+            playerEvents.get(player.getUUID()).stop(player.serverLevel());
             playerEvents.remove(player.getUUID());
         }
     }
@@ -196,7 +206,7 @@ public final class PlayerDifficultyManager {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            playerEvents.get(serverPlayer.getUUID()).onPlayerDeath(serverPlayer, (ServerLevel) serverPlayer.level);
+            playerEvents.get(serverPlayer.getUUID()).onPlayerDeath(serverPlayer, serverPlayer.serverLevel());
         }
     }
 
@@ -308,7 +318,7 @@ public final class PlayerDifficultyManager {
      */
     @SuppressWarnings("ConstantConditions")
     public void updatePlayerEvent(ServerPlayer player) {
-        ServerLevel level = player.getLevel();
+        ServerLevel level = player.serverLevel();
         ServerLevel overworld = server.overworld();
         AbstractEvent currentEvent = getCurrentEvent(player);
 
@@ -394,7 +404,7 @@ public final class PlayerDifficultyManager {
 
             if (eventData != null && eventData.contains("EventId", Tag.TAG_INT)) {
                 currentEvent = EventRegistry.getFromId(eventData.getInt("EventId")).createEvent();
-                currentEvent.read(eventData, player, player.getLevel());
+                currentEvent.read(eventData, player, player.serverLevel());
             }
             playerEvents.put(player.getUUID(), currentEvent);
         }

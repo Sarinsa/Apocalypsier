@@ -134,7 +134,7 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
             if (!isFrozen() && livingEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.BEDROCK) {
                 freeze(200);
 
-                if (!level.isClientSide) {
+                if (!level().isClientSide) {
                     playSound(ApocalypseSounds.GHOST_FREEZE.get(), 1.0F, 1.0F - (random.nextFloat() / 5));
                 }
             }
@@ -152,7 +152,7 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
             if (entity instanceof Player player) {
-                int duration = level.getDifficulty() == Difficulty.HARD ? 140 : 80;
+                int duration = level().getDifficulty() == Difficulty.HARD ? 140 : 80;
                 player.addEffect(new MobEffectInstance(ApocalypseEffects.HEAVY.get(), duration));
             }
             return true;
@@ -183,7 +183,7 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
                     setSecondsOnFire(8);
                 }
             }
-            if (!level.isClientSide) {
+            if (!level().isClientSide) {
                 if (freezeTime > 0) {
                     --freezeTime;
 
@@ -195,8 +195,8 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
         }
         super.aiStep();
 
-        if (!level.isClientSide) {
-            ServerLevel serverLevel = (ServerLevel) level;
+        if (!level().isClientSide) {
+            ServerLevel serverLevel = (ServerLevel) level();
 
             if (IFullMoonMob.shouldDisappear(getPlayerTargetUUID(), serverLevel, this)) {
                 IFullMoonMob.spawnSmoke(serverLevel, this);
@@ -264,8 +264,8 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
         this.entityData.set(IS_FROZEN, true);
         this.freezeTime = freezeTime;
 
-        if (level != null && !level.isClientSide) {
-            level.broadcastEntityEvent(this, (byte) 7);
+        if (level() != null && !level().isClientSide) {
+            level().broadcastEntityEvent(this, (byte) 7);
         }
     }
 
@@ -286,7 +286,7 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
 
     private void displayFreezeParticles() {
         for (int i = 0; i < 13; i++) {
-            level.addParticle(
+            level().addParticle(
                     ParticleTypes.END_ROD,
                     getX() + 0.5D,
                     getY() + 0.5D,

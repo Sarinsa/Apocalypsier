@@ -71,7 +71,7 @@ public class BlockHelper {
         if (entity.isEyeInFluidType(ForgeMod.WATER_TYPE.get()) && !EnchantmentHelper.hasAquaAffinity(entity)) {
             strength /= 5.0F;
         }
-        if (!entity.isOnGround()) {
+        if (!entity.onGround()) {
             strength /= 5.0F;
         }
         return Math.max(strength, 0.0F);

@@ -74,7 +74,7 @@ public abstract class AbstractFullMoonGhast extends Ghast implements IFullMoonMo
     public boolean canSeeDirectly(Entity entity) {
         Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 vector3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
-        return level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+        return level().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
     }
 
     @Nullable
@@ -102,8 +102,8 @@ public abstract class AbstractFullMoonGhast extends Ghast implements IFullMoonMo
     public void aiStep() {
         super.aiStep();
 
-        if (!level.isClientSide) {
-            ServerLevel serverLevel = (ServerLevel) level;
+        if (!level().isClientSide) {
+            ServerLevel serverLevel = (ServerLevel) level();
 
             if (IFullMoonMob.shouldDisappear(getPlayerTargetUUID(), serverLevel, this)) {
                 IFullMoonMob.spawnSmoke(serverLevel, this);
@@ -140,7 +140,7 @@ public abstract class AbstractFullMoonGhast extends Ghast implements IFullMoonMo
         for (int i = 0; i < dist; i++) {
             aabb = aabb.move(vector3d);
 
-            if (!level.noCollision(this, aabb)) {
+            if (!level().noCollision(this, aabb)) {
                 return false;
             }
         }
@@ -193,7 +193,7 @@ public abstract class AbstractFullMoonGhast extends Ghast implements IFullMoonMo
             AABB aabb = ghast.getBoundingBox().inflate(0.5F);
 
             aabb = aabb.move(vec);
-            return ghast.level.noCollision(ghast, aabb);
+            return ghast.level().noCollision(ghast, aabb);
         }
 
         public boolean canReachCurrentWanted() {

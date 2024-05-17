@@ -2,6 +2,7 @@ package com.toast.apocalypse.common.tag;
 
 import com.toast.apocalypse.common.core.Apocalypse;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
@@ -22,7 +23,7 @@ public class ApocalypseEntityTags {
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation id) {
-        return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, id);
+        return TagKey.create(Registries.ENTITY_TYPE, id);
     }
 
     public static void init() {}

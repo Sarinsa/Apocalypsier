@@ -52,8 +52,8 @@ public class FearwolfRunAwayGoal extends Goal {
 
     @Override
     public void start() {
-        if (!fearwolf.level.isClientSide) {
-            ServerLevel level = (ServerLevel) fearwolf.level;
+        if (!fearwolf.level().isClientSide) {
+            ServerLevel level = (ServerLevel) fearwolf.level();
             spawnSmoke(level, fearwolf);
         }
         fearwolf.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 150, 0));

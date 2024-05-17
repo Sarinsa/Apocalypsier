@@ -7,6 +7,7 @@ import com.toast.apocalypse.client.mobwiki.MobEntries;
 import com.toast.apocalypse.client.mobwiki.MobEntry;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.util.References;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.network.chat.Component;
@@ -104,40 +105,34 @@ public class MobWikiScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float wut) {
-        this.renderBackground(poseStack);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float wut) {
+        this.renderBackground(guiGraphics);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (this.currentEntry == MobEntries.EMPTY) {
-            RenderSystem.setShaderTexture(0, ADDITIONAL_PAGE);
             int i = (this.width - 280) / 2;
             // MatrixStack, x, y, uOffset, vOffset, uWidth, vHeight
-            blit(poseStack, i, 25, 0, 0, 280, 280);
+            guiGraphics.blit(ADDITIONAL_PAGE, i, 25, 0, 0, 280, 280);
         }
         else {
-            renderPageContent(poseStack, this.currentEntry);
+            renderPageContent(guiGraphics, this.currentEntry);
         }
     }
 
-    public void renderBackground(PoseStack poseStack) {
+    public void renderBackground(GuiGraphics guiGraphics) {
         if (minecraft.level != null) {
             // Gray transparent background
-            fillGradient(poseStack, 0, 0, width, height, -1072689136, -804253680);
+            guiGraphics.fillGradient(0, 0, width, height, -1072689136, -804253680);
         }
         else {
             // No idea how this could ever happen
-            renderDirtBackground(0);
+            renderDirtBackground(guiGraphics);
         }
     }
 
-    private void renderPageContent(PoseStack poseStack, MobEntry mobEntry) {
-        RenderSystem.setShaderTexture(0, FIRST_PAGE);
+    private void renderPageContent(GuiGraphics guiGraphics, MobEntry mobEntry) {
         int i = (this.width - 192) / 2;
-        blit(poseStack, i, 2, 0, 0, 192, 192);
-
-        RenderSystem.setShaderTexture(0, FIRST_PAGE);
-        blit(poseStack, i, 2, 0, 0, 192, 192);
-
-        drawCenteredString(poseStack, font, mobEntry.getMobName(), width / 2, 25, -1);
+        guiGraphics.blit(FIRST_PAGE, i, 2, 0, 0, 192, 192);
+        guiGraphics.drawCenteredString(font, mobEntry.getMobName(), width / 2, 25, -1);
     }
 }

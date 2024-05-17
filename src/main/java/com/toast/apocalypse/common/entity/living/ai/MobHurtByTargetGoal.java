@@ -33,7 +33,7 @@ public class MobHurtByTargetGoal extends TargetGoal {
         LivingEntity lastHurtByMob = mob.getLastHurtByMob();
 
         if (timeLastHurt != timestamp && lastHurtByMob != null) {
-            if (lastHurtByMob.getType() == EntityType.PLAYER && mob.level.getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER)) {
+            if (lastHurtByMob.getType() == EntityType.PLAYER && mob.level().getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER)) {
                 return false;
             }
             else {
@@ -71,7 +71,7 @@ public class MobHurtByTargetGoal extends TargetGoal {
     protected void alertOthers() {
         double followDistance = getFollowDistance();
         AABB aabb = AABB.unitCubeFromLowerCorner(mob.position()).inflate(followDistance, 10.0D, followDistance);
-        List<? extends Mob> list = mob.level.getEntitiesOfClass(mob.getClass(), aabb, EntitySelector.NO_SPECTATORS);
+        List<? extends Mob> list = mob.level().getEntitiesOfClass(mob.getClass(), aabb, EntitySelector.NO_SPECTATORS);
         Iterator<? extends Mob> iterator = list.iterator();
 
         while (true) {

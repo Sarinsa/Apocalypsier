@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Vector3f;
 import com.toast.apocalypse.common.core.Apocalypse;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -27,7 +26,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.joml.Vector3f;
 
 import java.util.Random;
 
@@ -97,7 +98,7 @@ public class AcidRainRenderHelper {
                     pos.set(k1, y, j1);
                     Biome biome = level.getBiome(pos).value();
 
-                    if (biome.getPrecipitation() != Biome.Precipitation.NONE) {
+                    if (biome.getPrecipitationAt(pos) != Biome.Precipitation.NONE) {
                         int i2 = level.getHeight(Heightmap.Types.MOTION_BLOCKING, k1, j1);
                         int j2 = j - l;
                         int k2 = j + l;
@@ -137,10 +138,10 @@ public class AcidRainRenderHelper {
                                 float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * rainLevel;
                                 pos.set(k1, l2, j1);
                                 int j3 = getLightColor(level, pos);
-                                bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)k2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)j2 * 0.25F + f2).color(RAIN_COLOR.x(), RAIN_COLOR.y(), RAIN_COLOR.z(), f4).uv2(j3).endVertex();
-                                bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)k2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F, (float)j2 * 0.25F + f2).color(RAIN_COLOR.x(), RAIN_COLOR.y(), RAIN_COLOR.z(), f4).uv2(j3).endVertex();
-                                bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)j2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F, (float)k2 * 0.25F + f2).color(RAIN_COLOR.x(), RAIN_COLOR.y(), RAIN_COLOR.z(), f4).uv2(j3).endVertex();
-                                bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)j2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)k2 * 0.25F + f2).color(RAIN_COLOR.x(), RAIN_COLOR.y(), RAIN_COLOR.z(), f4).uv2(j3).endVertex();
+                                bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)k2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)j2 * 0.25F + f2).color(RAIN_COLOR.x, RAIN_COLOR.y, RAIN_COLOR.z, f4).uv2(j3).endVertex();
+                                bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)k2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F, (float)j2 * 0.25F + f2).color(RAIN_COLOR.x, RAIN_COLOR.y, RAIN_COLOR.z, f4).uv2(j3).endVertex();
+                                bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)j2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F, (float)k2 * 0.25F + f2).color(RAIN_COLOR.x, RAIN_COLOR.y, RAIN_COLOR.z, f4).uv2(j3).endVertex();
+                                bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)j2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)k2 * 0.25F + f2).color(RAIN_COLOR.x, RAIN_COLOR.y, RAIN_COLOR.z, f4).uv2(j3).endVertex();
                             }
                         }
                     }
@@ -166,7 +167,7 @@ public class AcidRainRenderHelper {
 
         if (!(rainLevel <= 0.0F)) {
             Random random = new Random((long) ticks * 312987231L);
-            BlockPos renderInfoPos = new BlockPos(camera.getPosition());
+            BlockPos renderInfoPos = camera.getBlockPosition();
             BlockPos soundPos = null;
             int particleCount = (int) (100.0F * rainLevel * rainLevel) / 3;
 
@@ -183,7 +184,7 @@ public class AcidRainRenderHelper {
                 if (random.nextInt(5) > 0)
                     continue;
 
-                if (groundPos.getY() > 0 && groundPos.getY() <= renderInfoPos.getY() + 10 && groundPos.getY() >= renderInfoPos.getY() - 10 && biome.getPrecipitation() == Biome.Precipitation.RAIN && biome.warmEnoughToRain(groundPos)) {
+                if (groundPos.getY() > 0 && groundPos.getY() <= renderInfoPos.getY() + 10 && groundPos.getY() >= renderInfoPos.getY() - 10 && biome.getPrecipitationAt(groundPos) == Biome.Precipitation.RAIN && biome.warmEnoughToRain(groundPos)) {
                     soundPos = groundPos;
 
                     double xOffset = random.nextDouble();

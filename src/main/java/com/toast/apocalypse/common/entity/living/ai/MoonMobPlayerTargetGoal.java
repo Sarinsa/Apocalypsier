@@ -26,7 +26,7 @@ public class MoonMobPlayerTargetGoal<T extends Mob & IFullMoonMob> extends Targe
         if (playerTargetUUID == null)
             return false;
 
-        Player player = moonMob.level.getPlayerByUUID(playerTargetUUID);
+        Player player = moonMob.level().getPlayerByUUID(playerTargetUUID);
 
         if (player == null)
             return false;
@@ -50,7 +50,7 @@ public class MoonMobPlayerTargetGoal<T extends Mob & IFullMoonMob> extends Targe
     @SuppressWarnings("ConstantConditions")
     public void start() {
         LivingEntity target = moonMob.getTarget();
-        Player playerTarget = moonMob.level.getPlayerByUUID(moonMob.getPlayerTargetUUID());
+        Player playerTarget = moonMob.level().getPlayerByUUID(moonMob.getPlayerTargetUUID());
 
         moonMob.setTarget(playerTarget != null ? playerTarget : target);
         super.start();

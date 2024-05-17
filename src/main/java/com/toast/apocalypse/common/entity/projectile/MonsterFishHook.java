@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -97,7 +98,7 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
     public void onSyncedDataUpdated(EntityDataAccessor<?> dataParameter) {
         if (DATA_HOOKED_ENTITY.equals(dataParameter)) {
             int i = this.getEntityData().get(DATA_HOOKED_ENTITY);
-            this.hookedIn = i > 0 ? this.level.getEntity(i - 1) : null;
+            this.hookedIn = i > 0 ? level().getEntity(i - 1) : null;
         }
         super.onSyncedDataUpdated(dataParameter);
     }
@@ -121,8 +122,8 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
         if (livingEntity == null) {
             discard();
         }
-        else if (level.isClientSide || !shouldStopFishing(livingEntity)) {
-            if (onGround) {
+        else if (level().isClientSide || !shouldStopFishing(livingEntity)) {
+            if (onGround()) {
                 ++life;
                 if (life >= 1200) {
                     discard();
@@ -134,10 +135,10 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
             }
             float f = 0.0F;
             BlockPos blockpos = blockPosition();
-            FluidState fluidstate = level.getFluidState(blockpos);
+            FluidState fluidstate = level().getFluidState(blockpos);
 
             if (fluidstate.is(FluidTags.WATER)) {
-                f = fluidstate.getHeight(level, blockpos);
+                f = fluidstate.getHeight(level(), blockpos);
             }
             boolean flag = f > 0.0F;
 
@@ -186,7 +187,7 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
             move(MoverType.SELF, getDeltaMovement());
             updateRotation();
 
-            if (currentState == State.FLYING && (onGround || horizontalCollision)) {
+            if (currentState == State.FLYING && (onGround() || horizontalCollision)) {
                 setDeltaMovement(Vec3.ZERO);
             }
             setDeltaMovement(getDeltaMovement().scale(0.92D));
@@ -205,7 +206,7 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
     }
 
     private void checkCollision() {
-        HitResult hitResult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         this.onHit(hitResult);
     }
 
@@ -218,14 +219,14 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
     protected void onHitEntity(EntityHitResult hitResult) {
         super.onHitEntity(hitResult);
 
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             Entity entity = hitResult.getEntity();
 
             if (entity instanceof Player player) {
                 if (isBlocked(player)) {
                     if (getLivingOwner() instanceof Grump grump) {
                         grump.hookBlocked();
-                        level.broadcastEntityEvent(player, (byte) 29);
+                        level().broadcastEntityEvent(player, (byte) 29);
                     }
                     discard();
                     return;
@@ -271,7 +272,7 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte event) {
-        if (event == 31 && level.isClientSide && hookedIn instanceof Player player && player.isLocalPlayer()) {
+        if (event == 31 && level().isClientSide && hookedIn instanceof Player player && player.isLocalPlayer()) {
             bringInHookedEntity();
         }
         super.handleEntityEvent(event);
@@ -281,7 +282,7 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
         LivingEntity livingEntity = getLivingOwner();
 
         if (livingEntity != null) {
-            level.playSound(null, livingEntity.blockPosition(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.HOSTILE, 0.6F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
+            level().playSound(null, livingEntity.blockPosition(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.HOSTILE, 0.6F, 0.4F / (level().random.nextFloat() * 0.4F + 0.8F));
             Entity entity = hookedIn;
 
             double xMotion = livingEntity.getX() - getX();
@@ -322,7 +323,7 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -333,7 +334,7 @@ public class MonsterFishHook extends Projectile implements IEntityAdditionalSpaw
 
     @Override
     public void readSpawnData(FriendlyByteBuf additionalData) {
-        this.setOwner(level.getEntity(additionalData.readInt()));
+        this.setOwner(level().getEntity(additionalData.readInt()));
     }
 
     enum State {

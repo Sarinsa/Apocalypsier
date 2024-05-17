@@ -15,8 +15,9 @@ public class PassedGracePeriodTrigger extends SimpleCriterionTrigger<PassedGrace
         return ID;
     }
 
-    public PassedGracePeriodTrigger.TriggerInstance createInstance(JsonObject jsonObject, EntityPredicate.Composite composite, DeserializationContext context) {
-        return new PassedGracePeriodTrigger.TriggerInstance(composite);
+    @Override
+    public PassedGracePeriodTrigger.TriggerInstance createInstance(JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext context) {
+        return new PassedGracePeriodTrigger.TriggerInstance(predicate);
     }
 
     public void trigger(ServerPlayer player, long currentDifficulty) {
@@ -25,12 +26,12 @@ public class PassedGracePeriodTrigger extends SimpleCriterionTrigger<PassedGrace
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 
-        public TriggerInstance(EntityPredicate.Composite composite) {
-            super(PassedGracePeriodTrigger.ID, composite);
+        public TriggerInstance(ContextAwarePredicate predicate) {
+            super(PassedGracePeriodTrigger.ID, predicate);
         }
 
         public static PassedGracePeriodTrigger.TriggerInstance gracePeriodPassed() {
-            return new PassedGracePeriodTrigger.TriggerInstance(EntityPredicate.Composite.ANY);
+            return new PassedGracePeriodTrigger.TriggerInstance(ContextAwarePredicate.ANY);
         }
 
         public boolean matches(long currentDifficulty) {

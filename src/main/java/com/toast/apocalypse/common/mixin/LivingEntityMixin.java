@@ -32,7 +32,7 @@ public abstract class LivingEntityMixin extends Entity {
     public void onAiStep(CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
 
-        if (!entity.isOnGround())
+        if (!entity.onGround())
             ++this.timeAirborne;
         else {
             this.timeAirborne = 0;

@@ -180,7 +180,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
     public boolean doHurtTarget(Entity entity) {
         if (super.doHurtTarget(entity)) {
             if (entity instanceof Player player) {
-                int duration = level.getDifficulty() == Difficulty.HARD ? 100 : 60;
+                int duration = level().getDifficulty() == Difficulty.HARD ? 100 : 60;
                 player.addEffect(new MobEffectInstance(ApocalypseEffects.HEAVY.get(), duration));
             }
             return true;
@@ -204,8 +204,8 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
         super.aiStep();
 
         if (isEnraged()) {
-            if (level.isClientSide) {
-                level.addParticle(random.nextBoolean() ? ParticleTypes.SMOKE : ParticleTypes.CLOUD, getRandomX(0.5D), getY() + getBbHeight(), getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+            if (level().isClientSide) {
+                level().addParticle(random.nextBoolean() ? ParticleTypes.SMOKE : ParticleTypes.CLOUD, getRandomX(0.5D), getY() + getBbHeight(), getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
             }
         }
     }
@@ -215,14 +215,14 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
         ItemStack itemStack = player.getItemInHand(hand);
 
         if (itemStack.getItem() == ApocalypseItems.FATHERLY_TOAST.get() && !hasOwner()) {
-            if (!level.isClientSide) {
-                if (level.getRandom().nextInt(4) == 0) {
+            if (!level().isClientSide) {
+                if (level().getRandom().nextInt(4) == 0) {
                     tame(player, itemStack);
                     return InteractionResult.SUCCESS;
                 }
                 else {
                     usePlayerItem(player, itemStack);
-                    level.broadcastEntityEvent(this, (byte)6);
+                    level().broadcastEntityEvent(this, (byte)6);
                     return InteractionResult.CONSUME;
                 }
             }
@@ -244,7 +244,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
                 else {
                     if (getPassengers().isEmpty()) {
                         if (getHeadItem().getItem() == ApocalypseItems.BUCKET_HELM.get()) {
-                            Block.popResource(level, blockPosition(), getHeadItem());
+                            Block.popResource(level(), blockPosition(), getHeadItem());
                             inventory.setItem(0, ItemStack.EMPTY);
                             return InteractionResult.SUCCESS;
                         }
@@ -274,7 +274,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
         // Stop potential weird movement happening
         // if a move goal was suddenly interrupted
         moveHelperController.setAction(MoveControl.Operation.WAIT);
-        level.broadcastEntityEvent(this, (byte)7);
+        level().broadcastEntityEvent(this, (byte)7);
     }
 
     /**
@@ -310,7 +310,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
     }
 
     protected void updateContainerEquipment() {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             setHeadItem(inventory.getItem(0));
             setDropChance(EquipmentSlot.HEAD, 0.0F);
         }
@@ -336,10 +336,10 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
             double x = random.nextGaussian() * 0.02D;
             double y = random.nextGaussian() * 0.02D;
             double z = random.nextGaussian() * 0.02D;
-            level.addParticle(particleType, getRandomX(1.0D), getRandomY() + 0.5D, getRandomZ(1.0D), x, y, z);
+            level().addParticle(particleType, getRandomX(1.0D), getRandomY() + 0.5D, getRandomZ(1.0D), x, y, z);
         }
         Vec3 pos = position();
-        level.playLocalSound(pos.x(), pos.y(), pos.z(), SoundEvents.HORSE_EAT, SoundSource.NEUTRAL, 0.8F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F, false);
+        level().playLocalSound(pos.x(), pos.y(), pos.z(), SoundEvents.HORSE_EAT, SoundSource.NEUTRAL, 0.8F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F, false);
     }
 
     @Override
@@ -456,7 +456,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
     public LivingEntity getOwner() {
         try {
             UUID uuid = getOwnerUUID();
-            return uuid == null ? null : level.getPlayerByUUID(uuid);
+            return uuid == null ? null : level().getPlayerByUUID(uuid);
         }
         catch (IllegalArgumentException exception) {
             return null;
@@ -732,7 +732,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
                 LivingEntity target = owner.getLastHurtByMob() == null ? owner.getLastHurtMob() : owner.getLastHurtByMob();
 
                 if (target != null && target != grump && target != owner && !(target instanceof Creeper)) {
-                    // Is the target owned by our owner?
+                    // Is the target owned by my owner?
                     if (target instanceof TamableAnimal tamableAnimal) {
                         if (!tamableAnimal.isOwnedBy(owner)) {
                             this.target = tamableAnimal;
@@ -746,6 +746,8 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
                             return true;
                         }
                     }
+                    this.target = target;
+                    return true;
                 }
             }
             return false;
@@ -957,13 +959,13 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
         }
 
         private boolean canTeleportTo(BlockPos pos) {
-            BlockPathTypes pathType = WalkNodeEvaluator.getBlockPathTypeStatic(grump.level, pos.mutable());
+            BlockPathTypes pathType = WalkNodeEvaluator.getBlockPathTypeStatic(grump.level(), pos.mutable());
 
             if (pathType != BlockPathTypes.WALKABLE) {
                 return false;
             }
             else {
-                return grump.level.noCollision(grump, grump.getBoundingBox().move(pos.above()).inflate(2));
+                return grump.level().noCollision(grump, grump.getBoundingBox().move(pos.above()).inflate(2));
             }
         }
 

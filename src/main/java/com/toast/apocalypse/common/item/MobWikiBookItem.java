@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 public class MobWikiBookItem extends Item {
 
     public MobWikiBookItem() {
-        super(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.UNCOMMON).tab(CreativeModeTab.TAB_MISC));
+        super(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.UNCOMMON));
     }
 
     @Override

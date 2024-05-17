@@ -56,7 +56,7 @@ public class RainDamageTickHelper {
                     if (!difficultyManager.isRainingAcid(level))
                         continue;
 
-                    if (EnchantmentHelper.hasAquaAffinity(player) || !level.isRainingAt(player.blockPosition().offset(0.0D, player.getEyeHeight(), 0.0D)))
+                    if (EnchantmentHelper.hasAquaAffinity(player) || !level.isRainingAt(player.blockPosition().offset(0, (int) player.getEyeHeight(), 0)))
                         continue;
 
                     ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
@@ -68,7 +68,7 @@ public class RainDamageTickHelper {
                         headStack.hurtAndBreak(player.getRandom().nextInt(2), player, (playerEntity) -> player.broadcastBreakEvent(EquipmentSlot.HEAD));
                     }
                     else {
-                        player.hurt(ApocalypseDamageSources.RAIN_DAMAGE, RAIN_DAMAGE);
+                        player.hurt(ApocalypseDamageSources.of(level, ApocalypseDamageSources.ACID_RAIN), RAIN_DAMAGE);
                     }
                 }
             }

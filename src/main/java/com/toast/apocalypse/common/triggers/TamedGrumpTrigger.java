@@ -22,9 +22,9 @@ public class TamedGrumpTrigger extends SimpleCriterionTrigger<TamedGrumpTrigger.
         return ID;
     }
 
-    public TamedGrumpTrigger.TriggerInstance createInstance(JsonObject jsonObject, EntityPredicate.Composite composite, DeserializationContext context) {
-        EntityPredicate.Composite composite2 = EntityPredicate.Composite.fromJson(jsonObject, "entity", context);
-        return new TamedGrumpTrigger.TriggerInstance(composite, composite2);
+    public TamedGrumpTrigger.TriggerInstance createInstance(JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext context) {
+        ContextAwarePredicate predicate2 = EntityPredicate.fromJson(jsonObject, "entity", context);
+        return new TamedGrumpTrigger.TriggerInstance(predicate, predicate2);
     }
 
     public void trigger(ServerPlayer player, Grump grump) {
@@ -33,15 +33,15 @@ public class TamedGrumpTrigger extends SimpleCriterionTrigger<TamedGrumpTrigger.
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        private final EntityPredicate.Composite entity;
+        private final ContextAwarePredicate entity;
 
-        public TriggerInstance(EntityPredicate.Composite predicate1, EntityPredicate.Composite predicate2) {
+        public TriggerInstance(ContextAwarePredicate predicate1, ContextAwarePredicate predicate2) {
             super(TamedGrumpTrigger.ID, predicate1);
             entity = predicate2;
         }
 
         public static TamedGrumpTrigger.TriggerInstance tamedGrump() {
-            return new TamedGrumpTrigger.TriggerInstance(EntityPredicate.Composite.ANY, EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(ApocalypseEntities.GRUMP.get()).build()));
+            return new TamedGrumpTrigger.TriggerInstance(ContextAwarePredicate.ANY, EntityPredicate.wrap(EntityPredicate.Builder.entity().of(ApocalypseEntities.GRUMP.get()).build()));
         }
 
         public boolean matches(LootContext lootContext) {

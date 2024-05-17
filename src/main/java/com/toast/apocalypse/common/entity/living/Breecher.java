@@ -95,15 +95,15 @@ public class Breecher extends Creeper implements IFullMoonMob {
     public boolean canSeeDirectly(Entity entity) {
         Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 vector3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
-        return level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+        return level().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
     }
 
     @Override
     public void aiStep() {
         super.aiStep();
 
-        if (!level.isClientSide) {
-            ServerLevel serverLevel = (ServerLevel) level;
+        if (!level().isClientSide) {
+            ServerLevel serverLevel = (ServerLevel) level();
 
             if (IFullMoonMob.shouldDisappear(getPlayerTargetUUID(), serverLevel, this)) {
                 IFullMoonMob.spawnSmoke(serverLevel, this);

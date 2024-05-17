@@ -276,7 +276,7 @@ public final class MobEquipmentHandler {
                             if (ForgeRegistries.ITEMS.containsKey(itemId)) {
                                 Item item = ForgeRegistries.ITEMS.getValue(itemId); assert item != null;
                                 @Nullable EquipmentSlot slotType = item instanceof ArmorItem armorItem
-                                        ? armorItem.getSlot()
+                                        ? armorItem.getEquipmentSlot()
                                         : item.getEquipmentSlot(new ItemStack(item));
 
                                 // Default to head slot

@@ -6,7 +6,7 @@ import net.minecraft.world.item.ArmorMaterial;
 
 public class LunarArmorItem extends ArmorItem {
 
-    public LunarArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Properties properties) {
-        super(armorMaterial, equipmentSlotType, properties);
+    public LunarArmorItem(ArmorMaterial armorMaterial, ArmorItem.Type type, Properties properties) {
+        super(armorMaterial, type, properties);
     }
 }

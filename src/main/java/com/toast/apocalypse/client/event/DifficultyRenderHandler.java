@@ -7,6 +7,7 @@ import com.toast.apocalypse.common.util.CapabilityHelper;
 import com.toast.apocalypse.common.util.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -72,7 +73,7 @@ public class DifficultyRenderHandler {
         int width = event.getWindow().getGuiScaledWidth();
         int height = event.getWindow().getGuiScaledHeight();
 
-        Font fontRenderer = minecraft.font;
+        Font font = minecraft.font;
 
         // Calculate difficulty level in days with one decimal.
         int color = COLORS[0];
@@ -105,10 +106,10 @@ public class DifficultyRenderHandler {
                 x = 2;
                 break;
             case 1:
-                x = width - fontRenderer.width(difficultyInfo) - 2;
+                x = width - font.width(difficultyInfo) - 2;
                 break;
             case 2:
-                x = (width >> 1) - (fontRenderer.width(difficultyInfo) >> 1);
+                x = (width >> 1) - (font.width(difficultyInfo) >> 1);
                 break;
             default:
                 return;
@@ -129,7 +130,7 @@ public class DifficultyRenderHandler {
         x += OFFSET_X;
         y += OFFSET_Y;
 
-        fontRenderer.drawShadow(event.getPoseStack(), difficultyInfo, x, y, color);
+        event.getGuiGraphics().drawString(font, difficultyInfo, x, y, color);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

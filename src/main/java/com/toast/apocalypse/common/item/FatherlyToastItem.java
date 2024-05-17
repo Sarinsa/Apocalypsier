@@ -23,7 +23,6 @@ public class FatherlyToastItem extends Item {
         super(new Item.Properties()
                 .fireResistant()
                 .food(ApocalypseFoods.FATHERLY_TOAST)
-                .tab(CreativeModeTab.TAB_FOOD)
         );
     }
 

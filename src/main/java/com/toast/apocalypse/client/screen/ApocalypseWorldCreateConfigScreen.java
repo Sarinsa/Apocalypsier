@@ -1,16 +1,15 @@
 package com.toast.apocalypse.client.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.toast.apocalypse.client.screen.widget.config.DoubleConfigTextField;
 import com.toast.apocalypse.client.screen.widget.config.InfoPoint;
 import com.toast.apocalypse.common.core.config.util.ServerConfigHelper;
 import com.toast.apocalypse.common.util.References;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.client.event.RegisterNamedRenderTypesEvent;
 
 import javax.annotation.Nonnull;
 
@@ -54,10 +53,7 @@ public class ApocalypseWorldCreateConfigScreen extends Screen {
         maxDifficultyInfoPoint = new InfoPoint(
                 width / 2 + 35,
                 height / 2 - 60,
-                (button, matrixStack, mouseX, mouseY) -> {
-                    renderTooltip(matrixStack, Component.translatable(References.MAX_DIFFICULTY_CONFIG_FIELD_DESC), mouseX, mouseY);
-                },
-                Component.translatable(References.MAX_DIFFICULTY_CONFIG_FIELD_DESC));
+                Tooltip.create(Component.translatable(References.MAX_DIFFICULTY_CONFIG_FIELD_DESC)));
 
         gracePeriodField = new DoubleConfigTextField(
                 font,
@@ -72,10 +68,7 @@ public class ApocalypseWorldCreateConfigScreen extends Screen {
         gracePeriodInfoPoint = new InfoPoint(
                 width / 2 + 35,
                 height / 2 - 10,
-                (button, matrixStack, mouseX, mouseY) -> {
-                    renderTooltip(matrixStack, Component.translatable(References.GRACE_PERIOD_CONFIG_FIELD_DESC), mouseX, mouseY);
-                },
-                Component.translatable(References.GRACE_PERIOD_CONFIG_FIELD_DESC));
+                Tooltip.create(Component.translatable(References.GRACE_PERIOD_CONFIG_FIELD_DESC)));
 
         addWidget(maxDifficultyField);
         addWidget(gracePeriodField);
@@ -83,28 +76,34 @@ public class ApocalypseWorldCreateConfigScreen extends Screen {
         addWidget(gracePeriodInfoPoint);
 
         // Done button
-        addRenderableWidget(new Button(width / 2 - 75, height / 2 + 40, 70, 20, Component.translatable("gui.done"), (button) -> {
+        Button.Builder doneButton = new Button.Builder(Component.translatable("gui.done"), (button) -> {
             minecraft.setScreen(parent);
             ServerConfigHelper.updateModServerConfigValues(maxDifficultyField.getDoubleValue(), gracePeriodField.getDoubleValue());
-        }));
+        });
+        doneButton.pos(width / 2 - 75, height / 2 + 40);
+        doneButton.size(70, 20);
+        addRenderableWidget(doneButton.build());
 
         // Cancel button
-        addRenderableWidget(new Button(width / 2 + 5, height / 2 + 40, 70, 20, Component.translatable("gui.cancel"), (button) -> {
+        Button.Builder cancelButton = new Button.Builder(Component.translatable("gui.cancel"), (button) -> {
             minecraft.setScreen(parent);
-        }));
+        });
+        cancelButton.pos(width / 2 + 5, height / 2 + 40);
+        cancelButton.size(70, 20);
+        addRenderableWidget(cancelButton.build());
     }
 
 
     @Override
-    public void render(@Nonnull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(poseStack);
-        drawCenteredString(poseStack, font, title, width / 2, 20, -1);
+    public void render(@Nonnull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(guiGraphics);
+        guiGraphics.drawCenteredString(font, title, width / 2, 20, -1);
 
-        maxDifficultyField.render(poseStack, mouseX, mouseY, partialTicks);
-        gracePeriodField.render(poseStack, mouseX, mouseY, partialTicks);
-        maxDifficultyInfoPoint.render(poseStack, mouseX, mouseY, partialTicks);
-        gracePeriodInfoPoint.render(poseStack, mouseX, mouseY, partialTicks);
+        maxDifficultyField.render(guiGraphics, mouseX, mouseY, partialTicks);
+        gracePeriodField.render(guiGraphics, mouseX, mouseY, partialTicks);
+        maxDifficultyInfoPoint.render(guiGraphics, mouseX, mouseY, partialTicks);
+        gracePeriodInfoPoint.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 }

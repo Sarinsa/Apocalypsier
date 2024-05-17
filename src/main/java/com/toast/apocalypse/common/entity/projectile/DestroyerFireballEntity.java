@@ -7,6 +7,7 @@ import com.toast.apocalypse.common.misc.DestroyerExplosionCalculator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,8 +15,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -50,8 +53,8 @@ public class DestroyerFireballEntity extends Fireball {
      * explosion that can destroy any type of block.
      */
     public static void destroyerExplosion(Level level, Entity entity, DamageSource damageSource, double x, double y, double z, float explosionPower) {
-        Explosion.BlockInteraction mode = ForgeEventFactory.getMobGriefingEvent(level, entity) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
-        level.explode(entity, damageSource, new DestroyerExplosionCalculator(), x, y, z, explosionPower, false, mode);
+        boolean canDestroy = ForgeEventFactory.getMobGriefingEvent(level, entity);
+        level.explode(entity, damageSource, new DestroyerExplosionCalculator(), x, y, z, explosionPower, canDestroy, Level.ExplosionInteraction.MOB);
     }
 
     @Override
@@ -59,7 +62,7 @@ public class DestroyerFireballEntity extends Fireball {
         if (result.getType() == HitResult.Type.ENTITY) {
             EntityHitResult entityResult = (EntityHitResult) result;
             Entity entity = entityResult.getEntity();
-            DamageSource directImpact = DamageSource.fireball(this,getOwner());
+            DamageSource directImpact = level().damageSources().fireball(this, getOwner());
             entity.hurt(directImpact, 4.0F);
 
             if (entity instanceof LivingEntity livingEntity) {
@@ -89,8 +92,8 @@ public class DestroyerFireballEntity extends Fireball {
                 }
             }
         }
-        if (!level.isClientSide) {
-            destroyerExplosion(getCommandSenderWorld(), this, DamageSource.fireball(this, getOwner()), getX(), getY(), getZ(), explosionPower);
+        if (!level().isClientSide) {
+            destroyerExplosion(getCommandSenderWorld(), this, level().damageSources().fireball(this, getOwner()), getX(), getY(), getZ(), explosionPower);
             discard();
         }
     }
@@ -104,8 +107,8 @@ public class DestroyerFireballEntity extends Fireball {
             // BlockRayTraceResult, but just in case some other mod
             // wants to use the dummy info that would be parsed, lets not.
             // Did that explanation make sense? Probably not.
-            if (!level.isClientSide) {
-                destroyerExplosion(getCommandSenderWorld(), this, DamageSource.fireball(this, getOwner()), getX(), getY(), getZ(), explosionPower);
+            if (!level().isClientSide) {
+                destroyerExplosion(getCommandSenderWorld(), this, level().damageSources().fireball(this, getOwner()), getX(), getY(), getZ(), explosionPower);
                 discard();
             }
         }
@@ -148,7 +151,7 @@ public class DestroyerFireballEntity extends Fireball {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

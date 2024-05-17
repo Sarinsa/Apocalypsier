@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="[47,)"
 license="MIT License"
 issueTrackerURL="https://github.com/Sarinsa/Apocalypse-Rebooted/issues"
 
@@ -7,7 +7,7 @@ issueTrackerURL="https://github.com/Sarinsa/Apocalypse-Rebooted/issues"
     modId="apocalypse"
     version="${file.jarVersion}"
     displayName="Apocalypse Rebooted"
-    updateJSONURL="https://raw.githubusercontent.com/Sarinsa/Apocalypse-Rebooted/1.19.X/version_check.json"
+    updateJSONURL="https://raw.githubusercontent.com/Sarinsa/Apocalypse-Rebooted/1.20.X/version_check.json"
     logoFile="logo.png"
     credits="Sarinsa (Maintenance and porting), Frenderman (Artwork), Evo (Artwork), SoyTutta (Artwork)"
     authors="FatherToast (Original author and brainstormer)"
@@ -16,14 +16,14 @@ issueTrackerURL="https://github.com/Sarinsa/Apocalypse-Rebooted/issues"
 [[dependencies.apocalypse]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="[47,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.apocalypse]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2]"
+    versionRange="[1.20.1,]"
     ordering="NONE"
     side="BOTH"
 

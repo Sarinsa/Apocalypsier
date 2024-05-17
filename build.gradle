@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -35,70 +35,38 @@ minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        client {
+        configureEach {
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-            property "mixin.debug.export", "true"
-            property 'mixin.env.disableRefMap', 'true'
-
-            arg "-mixin.config=apocalypse.mixins.json"
-
 
             mods {
                 apocalypse {
                     source sourceSets.main
                 }
             }
+        }
+        client {
+            property "mixin.debug.export", "true"
+            property 'mixin.env.disableRefMap', 'true'
+
+            arg "-mixin.config=apocalypse.mixins.json"
         }
 
         server {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
             property 'mixin.env.disableRefMap', 'true'
             property "mixin.debug.export", "true"
 
             arg "-mixin.config=apocalypse.mixins.json"
-
-            mods {
-                apocalypse {
-                    source sourceSets.main
-                }
-            }
         }
 
         gameTestServer {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'apocalypse'
-
-            mods {
-                apocalypse {
-                    source sourceSets.main
-                }
-            }
         }
 
         data {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
             args '--mod', 'apocalypse', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                apocalypse {
-                    source sourceSets.main
-                }
-            }
         }
     }
 }
@@ -145,7 +113,7 @@ jar {
 }
 
 task apiJar(type: Jar) {
-    classifier = 'api'
+    archiveClassifier = 'api'
     include 'com/toast/apocalypse/api/**/*'
     exclude 'com/toast/apocalypse/api/impl/**/*'
 

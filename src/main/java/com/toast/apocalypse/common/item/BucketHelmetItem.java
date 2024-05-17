@@ -26,7 +26,7 @@ public class BucketHelmetItem extends ArmorItem {
     public static final String TEXTURE = Apocalypse.resourceLoc("textures/models/armor/bucket_helm.png").toString();
 
     public BucketHelmetItem() {
-        super(ArmorMaterials.IRON, EquipmentSlot.HEAD, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).defaultDurability(0));
+        super(ArmorMaterials.IRON, Type.HELMET, new Item.Properties().defaultDurability(0));
     }
 
     @Override

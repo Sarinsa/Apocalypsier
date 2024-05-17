@@ -15,10 +15,12 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -127,7 +129,7 @@ public class Seeker extends AbstractFullMoonGhast {
                 return super.hurt(damageSource, damage);
             }
         }
-        else if (damageSource.isExplosion() && damageSource.getEntity() == this) {
+        else if (damageSource.is(DamageTypeTags.IS_EXPLOSION) && damageSource.getEntity() == this) {
             return false;
         }
         return super.hurt(damageSource, damage);
@@ -195,7 +197,7 @@ public class Seeker extends AbstractFullMoonGhast {
             LivingEntity target = seeker.getTarget();
 
             if (seeker.horizontalDistanceToSqr(target) < 4096.0D) {
-                Level level = seeker.level;
+                Level level = seeker.level();
                 ++chargeTime;
                 if (chargeTime == 10 && !seeker.isSilent()) {
                     level.levelEvent(null, 1015, seeker.blockPosition(), 0);
@@ -318,14 +320,14 @@ public class Seeker extends AbstractFullMoonGhast {
 
             if (target != null) {
                 AABB searchBox = target.getBoundingBox().inflate(60.0D, 30.0D, 60.0D);
-                List<? extends Mob> toAlert = MobHelper.getLoadedEntitiesCapped(Mob.class, seeker.level, searchBox, (entity) -> ALERT_PREDICATE.test(entity, seeker), maxAlertCount);
+                List<? extends Mob> toAlert = MobHelper.getLoadedEntitiesCapped(Mob.class, seeker.level(), searchBox, (entity) -> ALERT_PREDICATE.test(entity, seeker), maxAlertCount);
 
                 if (toAlert.isEmpty()) {
                     // No need to perform further checks if the list is empty
                     timeAlerting = 0;
                     return;
                 }
-                ApocalypseEventFactory.fireSeekerAlertEvent(seeker.level, seeker, toAlert, target);
+                ApocalypseEventFactory.fireSeekerAlertEvent(seeker.level(), seeker, toAlert, target);
 
                 for (Mob mob : toAlert) {
                     if (mob.getTarget() != target) {

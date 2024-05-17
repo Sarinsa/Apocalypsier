@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -50,9 +51,8 @@ public class SeekerFireballEntity extends Fireball {
      * explosion. A custom ExplosionContext is used in order
      * to explode blocks even if they are surrounded by a fluid.
      */
-    public static void seekerExplosion(Level level, @Nullable Entity entity, DamageSource damageSource, double x, double y, double z, float explosionPower, boolean enableMobGrief) {
-        Explosion.BlockInteraction mode = enableMobGrief ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
-        level.explode(entity, damageSource, new SeekerExplosionCalculator(), x, y, z, explosionPower, true, mode);
+    public static void seekerExplosion(Level level, @Nullable Entity entity, DamageSource damageSource, double x, double y, double z, float explosionPower, boolean canDestroy) {
+        level.explode(entity, damageSource, new SeekerExplosionCalculator(), x, y, z, explosionPower, canDestroy, Level.ExplosionInteraction.MOB);
     }
 
     @Override
@@ -61,12 +61,11 @@ public class SeekerFireballEntity extends Fireball {
         Level level = entity.getCommandSenderWorld();
 
         if (entity instanceof Seeker) {
-            boolean enableMobGrief = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this);
-            Explosion.BlockInteraction interaction = enableMobGrief ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
+            boolean canDestroy = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this);
 
             if (!level.isClientSide) {
-                entity.hurt(DamageSource.fireball(this, getOwner()), 1000.0F);
-                level.explode(null, getX(), getY(), getZ(), 2.0F, interaction);
+                entity.hurt(damageSources().fireball(this, getOwner()), 1000.0F);
+                level.explode(null, getX(), getY(), getZ(), 2.0F, canDestroy, Level.ExplosionInteraction.MOB);
                 discard();
             }
         }
@@ -74,7 +73,7 @@ public class SeekerFireballEntity extends Fireball {
             Entity owner = getOwner();
             int remainingFireTicks = entity.getRemainingFireTicks();
             entity.setSecondsOnFire(5);
-            boolean flag = entity.hurt(DamageSource.fireball(this, owner), 5.0F);
+            boolean flag = entity.hurt(damageSources().fireball(this, owner), 5.0F);
 
             if (!flag) {
                 entity.setRemainingFireTicks(remainingFireTicks);
@@ -93,21 +92,21 @@ public class SeekerFireballEntity extends Fireball {
         if (getOwner() instanceof LivingEntity) {
             owner = (LivingEntity) getOwner();
         }
-        boolean enabledMobGrief = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || ForgeEventFactory.getMobGriefingEvent(level, this);
+        boolean canDestroy = level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || ForgeEventFactory.getMobGriefingEvent(level(), this);
 
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             if (sawTarget) {
-                if (!(owner instanceof Mob) || enabledMobGrief) {
+                if (!(owner instanceof Mob) || canDestroy) {
                     BlockPos firePos = result.getBlockPos().relative(direction);
 
-                    if (level.isEmptyBlock(firePos)) {
-                        level.setBlockAndUpdate(firePos, FireBlock.getState(level, firePos));
-                        level.playSound(null, blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.MASTER, 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                    if (level().isEmptyBlock(firePos)) {
+                        level().setBlockAndUpdate(firePos, FireBlock.getState(level(), firePos));
+                        level().playSound(null, blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.MASTER, 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                     }
                 }
             }
             else {
-                seekerExplosion(level, owner, DamageSource.fireball(this, getOwner()), getX(), getY(), getZ(), (float) explosionStrength, enabledMobGrief);
+                seekerExplosion(level(), owner, damageSources().fireball(this, getOwner()), getX(), getY(), getZ(), (float) explosionStrength, canDestroy);
             }
         }
     }
@@ -116,7 +115,7 @@ public class SeekerFireballEntity extends Fireball {
     protected void onHit(HitResult result) {
         super.onHit(result);
 
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             discard();
         }
     }
@@ -164,7 +163,7 @@ public class SeekerFireballEntity extends Fireball {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

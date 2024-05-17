@@ -32,7 +32,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -58,7 +58,7 @@ public class EntityEvents {
      * Cancel full moon monsters despawning during full moons.
      */
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void onDespawnCheck(LivingSpawnEvent.AllowDespawn event) {
+    public void onDespawnCheck(MobSpawnEvent.AllowDespawn event) {
         if (!event.getLevel().isClientSide()) {
             if (event.getEntity() instanceof IFullMoonMob && Apocalypse.INSTANCE.getDifficultyManager().isFullMoonNight()) {
                 event.setResult(Event.Result.DENY);
@@ -71,18 +71,18 @@ public class EntityEvents {
      * to have passed a certain difficulty to spawn.
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-        MobSpawnType spawnType = event.getSpawnReason();
+    public void onCheckSpawn(MobSpawnEvent.SpawnPlacementCheck event) {
+        MobSpawnType spawnType = event.getSpawnType();
 
         if (spawnType == MobSpawnType.SPAWNER || spawnType == MobSpawnType.SPAWN_EGG || spawnType == MobSpawnType.COMMAND
                 || spawnType == MobSpawnType.MOB_SUMMONED || spawnType == MobSpawnType.STRUCTURE)
             return;
 
-        EntityType<?> entityType = event.getEntity().getType();
+        EntityType<?> entityType = event.getEntityType();
 
         if (MOB_DIFFICULTIES.containsKey(entityType)) {
             final double neededDifficulty = MOB_DIFFICULTIES.get(entityType);
-            final long nearestDifficulty = (PlayerDifficultyManager.getNearestPlayerDifficulty(event.getLevel(), event.getEntity())) / References.DAY_LENGTH;
+            final long nearestDifficulty = (PlayerDifficultyManager.getNearestPlayerDifficulty(event.getLevel(), event.getPos())) / References.DAY_LENGTH;
 
             if (nearestDifficulty < neededDifficulty)
                 event.setResult(Event.Result.DENY);
@@ -160,7 +160,7 @@ public class EntityEvents {
                 int itemCount = itemEntity.getItem().getCount();
                 ItemStack stack = new ItemStack(ApocalypseItems.FATHERLY_TOAST.get(), itemCount);
                 // Toast level, nice
-                stack.getOrCreateTag().putInt("ToastLevel", event.getEntity().level.random.nextInt(99) + 1);
+                stack.getOrCreateTag().putInt("ToastLevel", event.getEntity().level().random.nextInt(99) + 1);
                 level.addFreshEntity(new ItemEntity(level, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), stack));
                 itemEntity.discard();
             }

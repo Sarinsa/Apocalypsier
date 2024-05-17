@@ -1,6 +1,5 @@
 package com.toast.apocalypse.client.event;
 
-import com.mojang.math.Vector3f;
 import com.toast.apocalypse.client.renderer.weather.AcidRainRenderHelper;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.config.ApocalypseClientConfig;
@@ -9,6 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import org.joml.Vector3f;
 
 import java.awt.*;
 

@@ -22,7 +22,7 @@ public class MobHelper {
      * @return True if the area is valid for spawning.
      */
     public static boolean canSpawn(LivingEntity entity) {
-        Level level = entity.level;
+        Level level = entity.level();
         return level.noCollision(entity.getBoundingBox()) && level.noCollision(entity, entity.getBoundingBox());
     }
 

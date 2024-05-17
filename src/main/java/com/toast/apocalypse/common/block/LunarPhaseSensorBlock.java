@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,7 +37,7 @@ public class LunarPhaseSensorBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D);
 
     public LunarPhaseSensorBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL).strength(1.0F).sound(SoundType.METAL));
+        super(BlockBehaviour.Properties.of().strength(1.0F).requiresCorrectToolForDrops().sound(SoundType.METAL));
         registerDefaultState(stateDefinition.any().setValue(POWER, 0).setValue(INVERTED, false));
     }
 
