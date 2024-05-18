@@ -82,6 +82,7 @@ public class Apocalypse {
         // Misc events
         eventBus.addListener(ApocalypseEntities::createEntityAttributes);
         eventBus.addListener(ApocalypseEntities::registerEntitySpawnPlacement);
+        eventBus.addListener(ApocalypseItems::onCreativeTabPopulate);
         eventBus.addListener(this::onCommonSetup);
         eventBus.addListener(this::onLoadComplete);
         eventBus.addListener(this::sendIMCMessages);

@@ -32,6 +32,5 @@ public class ApocalypseBlocks {
     }
 
     public static void onMissingMappings(MissingMappingsEvent event) {
-
     }
 }

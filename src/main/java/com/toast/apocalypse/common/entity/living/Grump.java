@@ -734,16 +734,14 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
                 if (target != null && target != grump && target != owner && !(target instanceof Creeper)) {
                     // Is the target owned by my owner?
                     if (target instanceof TamableAnimal tamableAnimal) {
-                        if (!tamableAnimal.isOwnedBy(owner)) {
-                            this.target = tamableAnimal;
-                            return true;
+                        if (tamableAnimal.isOwnedBy(owner)) {
+                            return false;
                         }
                     }
                     // Is the target a grump also owned by my owner?
-                    else if (target instanceof Grump) {
-                        if (((Grump)target).getOwner() != owner) {
-                            this.target = target;
-                            return true;
+                    else if (target instanceof Grump targetGrump) {
+                        if (targetGrump.getOwner() == owner) {
+                            return false;
                         }
                     }
                     this.target = target;
