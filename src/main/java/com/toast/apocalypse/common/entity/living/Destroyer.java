@@ -4,6 +4,7 @@ import com.toast.apocalypse.common.core.config.ApocalypseCommonConfig;
 import com.toast.apocalypse.common.entity.living.ai.MobHurtByTargetGoal;
 import com.toast.apocalypse.common.entity.living.ai.MoonMobPlayerTargetGoal;
 import com.toast.apocalypse.common.entity.projectile.DestroyerFireballEntity;
+import com.toast.apocalypse.common.entity.projectile.SeekerFireballEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BedBlock;
@@ -110,8 +112,26 @@ public class Destroyer extends AbstractFullMoonGhast {
     }
 
     @Override
+    public boolean isInvulnerableTo(DamageSource damageSource) {
+        return !isReflectedFireball(damageSource)
+                && (isRemoved()
+                || isInvulnerable()
+                && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
+                && !damageSource.isCreativePlayer()
+                || damageSource.is(DamageTypeTags.IS_FIRE)
+                && fireImmune()
+                || damageSource.is(DamageTypeTags.IS_FALL));
+    }
+
+    private static boolean isReflectedFireball(DamageSource damageSource) {
+        Entity entity = damageSource.getDirectEntity();
+
+        return (entity instanceof LargeFireball || entity instanceof DestroyerFireballEntity) && damageSource.getEntity() instanceof Player;
+    }
+
+    @Override
     public boolean hurt(DamageSource damageSource, float damage) {
-        if (this.isInvulnerableTo(damageSource)) {
+        if (isInvulnerableTo(damageSource)) {
             return false;
         }
 
