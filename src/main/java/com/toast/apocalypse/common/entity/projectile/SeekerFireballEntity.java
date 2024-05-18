@@ -16,7 +16,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -61,10 +63,10 @@ public class SeekerFireballEntity extends Fireball {
         Level level = entity.getCommandSenderWorld();
 
         if (entity instanceof Seeker) {
-            boolean canDestroy = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this);
+            boolean canDestroy = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || ForgeEventFactory.getMobGriefingEvent(level, this);
 
             if (!level.isClientSide) {
-                entity.hurt(damageSources().fireball(this, getOwner()), 1000.0F);
+                entity.hurt(damageSources().fireball(this, getOwner()), 2.0F);
                 level.explode(null, getX(), getY(), getZ(), 2.0F, canDestroy, Level.ExplosionInteraction.MOB);
                 discard();
             }
@@ -89,8 +91,8 @@ public class SeekerFireballEntity extends Fireball {
         Direction direction = result.getDirection();
         LivingEntity owner = null;
 
-        if (getOwner() instanceof LivingEntity) {
-            owner = (LivingEntity) getOwner();
+        if (getOwner() instanceof LivingEntity livingEntity) {
+            owner = livingEntity;
         }
         boolean canDestroy = level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || ForgeEventFactory.getMobGriefingEvent(level(), this);
 

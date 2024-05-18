@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
@@ -116,17 +118,34 @@ public class Seeker extends AbstractFullMoonGhast {
     }
 
     @Override
+    public boolean isInvulnerableTo(DamageSource damageSource) {
+        return !isReflectedFireball(damageSource)
+                && (isRemoved()
+                || isInvulnerable()
+                && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
+                && !damageSource.isCreativePlayer()
+                || damageSource.is(DamageTypeTags.IS_FIRE)
+                && fireImmune()
+                || damageSource.is(DamageTypeTags.IS_FALL));
+    }
+
+    private static boolean isReflectedFireball(DamageSource damageSource) {
+        Entity entity = damageSource.getDirectEntity();
+
+        return entity instanceof SeekerFireballEntity && damageSource.getEntity() instanceof Player;
+    }
+
+    @Override
     public boolean hurt(DamageSource damageSource, float damage) {
         if (isInvulnerableTo(damageSource)) {
             return false;
         }
         else if (damageSource.getDirectEntity() instanceof SeekerFireballEntity || damageSource.getDirectEntity() instanceof DestroyerFireballEntity) {
-
             if (damageSource.getEntity() == this) {
                 return false;
             }
             else {
-                return super.hurt(damageSource, damage);
+                return super.hurt(damageSource, 1000000.0F);
             }
         }
         else if (damageSource.is(DamageTypeTags.IS_EXPLOSION) && damageSource.getEntity() == this) {
