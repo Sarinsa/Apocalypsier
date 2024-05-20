@@ -41,7 +41,7 @@ public class ApocalypseEntityLootTableProvider extends EntityLootSubProvider {
 
     @Override
     public void generate() {
-        this.add(ApocalypseEntities.GHOST.get(), LootTable.lootTable()
+        add(ApocalypseEntities.GHOST.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0F))
                         .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE)
@@ -54,7 +54,7 @@ public class ApocalypseEntityLootTableProvider extends EntityLootSubProvider {
                                 .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
 
-        this.add(ApocalypseEntities.GRUMP.get(), LootTable.lootTable()
+        add(ApocalypseEntities.GRUMP.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(Items.COOKIE)
@@ -66,7 +66,8 @@ public class ApocalypseEntityLootTableProvider extends EntityLootSubProvider {
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                 .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-        this.add(ApocalypseEntities.SEEKER.get(), LootTable.lootTable()
+
+        add(ApocalypseEntities.SEEKER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(Items.GUNPOWDER)
@@ -78,7 +79,8 @@ public class ApocalypseEntityLootTableProvider extends EntityLootSubProvider {
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                 .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-        this.add(ApocalypseEntities.DESTROYER.get(), LootTable.lootTable()
+
+        add(ApocalypseEntities.DESTROYER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(Items.GUNPOWDER)
@@ -90,7 +92,8 @@ public class ApocalypseEntityLootTableProvider extends EntityLootSubProvider {
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                 .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-        this.add(ApocalypseEntities.BREECHER.get(), LootTable.lootTable()
+
+        add(ApocalypseEntities.BREECHER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(Items.GUNPOWDER)
@@ -102,7 +105,8 @@ public class ApocalypseEntityLootTableProvider extends EntityLootSubProvider {
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                 .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-        this.add(ApocalypseEntities.FEARWOLF.get(), LootTable.lootTable()
+
+        add(ApocalypseEntities.FEARWOLF.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(Items.BONE)

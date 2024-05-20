@@ -43,6 +43,7 @@ public class PacketHandler {
         registerMessage(S2COpenMobWikiScreen.class, S2COpenMobWikiScreen::encode, S2COpenMobWikiScreen::decode, S2COpenMobWikiScreen::handle);
         registerMessage(S2COpenGrumpInventory.class, S2COpenGrumpInventory::encode, S2COpenGrumpInventory::decode, S2COpenGrumpInventory::handle);
         registerMessage(S2CSimpleClientTask.class, S2CSimpleClientTask::encode, S2CSimpleClientTask::decode, S2CSimpleClientTask::handle);
+        registerMessage(S2CDynTrap.class, S2CDynTrap::encode, S2CDynTrap::decode, S2CDynTrap::handle);
 
         // Client -> Server
         registerMessage(C2SOpenGrumpInventory.class, C2SOpenGrumpInventory::encode, C2SOpenGrumpInventory::decode, C2SOpenGrumpInventory::handle);

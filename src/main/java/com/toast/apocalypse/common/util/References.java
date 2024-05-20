@@ -38,6 +38,8 @@ public class References {
     public static final String DIFFICULTY = "apocalypse.hud.difficulty";
     public static final String DIFFICULTY_RATE = "apocalypse.hud.rate";
 
+    public static final String DYNAMIC_TRAP_CONTAINER = "container.apocalypse.dynamic_trap";
+
 
     //
     // MOB WIKI

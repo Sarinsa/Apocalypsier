@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "apocalypse:block/dynamic_trap_bottom",
+    "east": "apocalypse:block/dynamic_trap_side_not_operational",
+    "north": "apocalypse:block/dynamic_trap_side_not_operational",
+    "particle": "apocalypse:block/dynamic_trap_bottom",
+    "south": "apocalypse:block/dynamic_trap_side_not_operational",
+    "up": "apocalypse:block/dynamic_trap_top_not_operational",
+    "west": "apocalypse:block/dynamic_trap_side_not_operational"
+  }
+}

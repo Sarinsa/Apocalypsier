@@ -15,9 +15,12 @@ import com.toast.apocalypse.client.renderer.entity.living.seeker.SeekerRenderer;
 import com.toast.apocalypse.client.renderer.entity.projectile.monsterhook.MonsterHookRenderer;
 import com.toast.apocalypse.client.renderer.model.armor.BucketHelmetModel;
 import com.toast.apocalypse.client.renderer.model.armor.GrumpBucketHelmetModel;
+import com.toast.apocalypse.client.screen.DynamicTrapMenuScreen;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.register.ApocalypseEntities;
+import com.toast.apocalypse.common.core.register.ApocalypseMenus;
 import com.toast.apocalypse.common.core.register.ApocalypseParticles;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.CreeperModel;
 import net.minecraft.client.model.GhastModel;
 import net.minecraft.client.model.WolfModel;
@@ -46,13 +49,14 @@ public class ClientRegister {
 
         modBus.addListener(ClientUtil::onAddLayer);
 
-        //registerScreenMenus();
+        registerMenuScreens();
         MobEntries.init();
 
         event.enqueueWork(ItemModelProps::register);
     }
 
-    private static void registerScreenMenus() {
+    private static void registerMenuScreens() {
+        MenuScreens.register(ApocalypseMenus.DYNAMIC_TRAP.get(), DynamicTrapMenuScreen::new);
     }
 
     @SubscribeEvent

@@ -133,10 +133,6 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
         if (entity instanceof LivingEntity livingEntity) {
             if (!isFrozen() && livingEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.BEDROCK) {
                 freeze(200);
-
-                if (!level().isClientSide) {
-                    playSound(ApocalypseSounds.GHOST_FREEZE.get(), 1.0F, 1.0F - (random.nextFloat() / 5));
-                }
             }
         }
         if (super.hurt(damageSource, damage)) {
@@ -260,12 +256,15 @@ public class Ghost extends FlyingMob implements Enemy, IFullMoonMob {
         return this.entityData.get(IS_FROZEN);
     }
 
-    protected void freeze(int freezeTime) {
+    public void freeze(int freezeTime) {
         this.entityData.set(IS_FROZEN, true);
         this.freezeTime = freezeTime;
 
         if (level() != null && !level().isClientSide) {
             level().broadcastEntityEvent(this, (byte) 7);
+        }
+        if (!level().isClientSide) {
+            playSound(ApocalypseSounds.GHOST_FREEZE.get(), 1.0F, 1.0F - (random.nextFloat() / 5));
         }
     }
 

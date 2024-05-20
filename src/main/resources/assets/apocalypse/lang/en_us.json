@@ -11,6 +11,7 @@
 
   "block.apocalypse.lunar_phase_sensor": "Lunar Phase Sensor",
   "block.apocalypse.midnight_steel_block": "Midnight Steel Block",
+  "block.apocalypse.dynamic_trap": "Dynamic Trap",
 
   "item.apocalypse.fragmented_soul": "Fragmented Soul",
   "item.apocalypse.midnight_steel_ingot": "Midnight Steel Ingot",
@@ -36,6 +37,8 @@
   "entity.apocalypse.fearwolf": "Fearwolf",
 
   "effect.apocalypse.heavy": "Strong Gravity",
+
+  "container.apocalypse.dynamic_trap": "Dynamic Trap",
 
   "sound_event.apocalypse.subtitle.ghost_freeze": "Ghost freezes",
   "sound_event.apocalypse.subtitle.grump_rage": "Grump losing composure",

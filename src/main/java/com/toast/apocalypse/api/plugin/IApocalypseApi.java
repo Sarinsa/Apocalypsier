@@ -7,14 +7,14 @@ package com.toast.apocalypse.api.plugin;
 public interface IApocalypseApi {
 
     /**
-     * @return The IRegistryHelper instance
+     * @return The RegistryHelper instance
      *         parsed by Apocalypse
      */
-    IRegistryHelper getRegistryHelper();
+    RegistryHelper getRegistryHelper();
 
     /**
-     * @return The IDifficultyProvider instance
+     * @return The DifficultyProviderImpl instance
      *         parsed by Apocalypse.
      */
-    IDifficultyProvider getDifficultyProvider();
+    DifficultyProvider getDifficultyProvider();
 }

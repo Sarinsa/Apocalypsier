@@ -4,9 +4,11 @@ import com.toast.apocalypse.client.ClientUtil;
 import com.toast.apocalypse.client.event.DifficultyRenderHandler;
 import com.toast.apocalypse.client.screen.GrumpInventoryScreen;
 import com.toast.apocalypse.client.screen.MobWikiScreen;
+import com.toast.apocalypse.common.blockentity.DynamicTrapBlockEntity;
 import com.toast.apocalypse.common.capability.ApocalypseCapabilities;
 import com.toast.apocalypse.common.capability.difficulty.DifficultyProvider;
 import com.toast.apocalypse.common.capability.mobwiki.MobWikiProvider;
+import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.entity.living.Grump;
 import com.toast.apocalypse.common.inventory.container.GrumpInventoryContainer;
 import com.toast.apocalypse.common.network.message.*;
@@ -14,10 +16,11 @@ import com.toast.apocalypse.common.util.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
 
 /**
  * Referencing client only code here should cause no trouble
@@ -119,12 +122,32 @@ public class ClientWork {
 
 
     public static void handleSimpleClientTaskRequest(S2CSimpleClientTask message) {
-
         if (message.action == S2CSimpleClientTask.SET_ACID_RAIN) {
             ClientUtil.ACID_RAIN_TICKER.setRainingAcid(true);
         }
         else if (message.action == S2CSimpleClientTask.REMOVE_ACID_RAIN) {
             ClientUtil.ACID_RAIN_TICKER.setRainingAcid(false);
+        }
+    }
+
+
+    public static void handleDynTrapUpdate(S2CDynTrap message) {
+        BlockPos pos = message.pos;
+        ClientLevel level = Minecraft.getInstance().level;
+
+        if (level.getExistingBlockEntity(pos) instanceof DynamicTrapBlockEntity trap) {
+            if (message.id.isEmpty()) {
+                trap.setCurrentTrap(null);
+                return;
+            }
+            ResourceLocation id = ResourceLocation.tryParse(message.id);
+
+            if (id == null)
+                return;
+
+            if (ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().containsKey(id)) {
+                trap.setCurrentTrap(ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getValue(id));
+            }
         }
     }
 }

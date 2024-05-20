@@ -11,6 +11,15 @@ import java.util.function.Predicate;
 // Uh, I couldn't come up with a better name for this class
 public class DataStructureUtils {
 
+    public static <T> T[] copyOfFill(T[] original, int newLength, T rest) {
+        T[] copy = Arrays.copyOf(original, newLength);
+
+        for (int i = original.length; i < newLength; i++) {
+            copy[i] = rest;
+        }
+        return copy;
+    }
+
     @Nullable
     public static <T> T getRandomListElement(@Nonnull Random random, @Nonnull List<T> list) {
         return list.isEmpty() ? null :

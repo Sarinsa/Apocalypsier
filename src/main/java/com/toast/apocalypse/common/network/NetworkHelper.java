@@ -1,5 +1,7 @@
 package com.toast.apocalypse.common.network;
 
+import com.toast.apocalypse.common.blockentity.DynamicTrapBlockEntity;
+import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.entity.living.Grump;
 import com.toast.apocalypse.common.network.message.*;
 import com.toast.apocalypse.common.util.CapabilityHelper;
@@ -100,6 +102,18 @@ public class NetworkHelper {
         PacketHandler.sendToClient(new S2COpenMobWikiScreen(player.getUUID()), player);
     }
 
+    public static void sendDynTrapUpdate(@Nonnull ServerLevel level, DynamicTrapBlockEntity trap) {
+        if (trap == null)
+            return;
+
+        String id = trap.getCurrentTrap() == null
+                ? ""
+                : ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(trap.getCurrentTrap()).toString();
+
+        for (ServerPlayer player : level.players()) {
+            PacketHandler.sendToClient(new S2CDynTrap(trap.getBlockPos(), id), player);
+        }
+    }
 
     /**
      * Sends a message from the server to client

@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
  * A simple interface for reading various
  * difficulty related data from players.
  */
-public interface IDifficultyProvider {
+public interface DifficultyProvider {
 
     /**
      * @return The player's current difficulty rate/multiplier.

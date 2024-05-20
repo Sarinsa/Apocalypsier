@@ -31,7 +31,8 @@ public class ApocalypseBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        this.dropSelf(ApocalypseBlocks.LUNAR_PHASE_SENSOR.get());
-        this.dropSelf(ApocalypseBlocks.MIDNIGHT_STEEL_BLOCK.get());
+        dropSelf(ApocalypseBlocks.LUNAR_PHASE_SENSOR.get());
+        dropSelf(ApocalypseBlocks.MIDNIGHT_STEEL_BLOCK.get());
+        dropSelf(ApocalypseBlocks.DYNAMIC_TRAP.get());
     }
 }

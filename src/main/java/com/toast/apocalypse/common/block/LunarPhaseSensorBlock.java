@@ -1,6 +1,6 @@
 package com.toast.apocalypse.common.block;
 
-import com.toast.apocalypse.common.blockentity.LunarPhaseSensorTileEntity;
+import com.toast.apocalypse.common.blockentity.LunarPhaseSensorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -112,13 +112,13 @@ public class LunarPhaseSensorBlock extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new LunarPhaseSensorTileEntity(pos, state);
+        return new LunarPhaseSensorBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return (lvl, pos, state, blockEntity) -> LunarPhaseSensorTileEntity.tick(lvl, pos, state, (LunarPhaseSensorTileEntity) blockEntity);
+        return (lvl, pos, state, blockEntity) -> LunarPhaseSensorBlockEntity.tick(lvl, pos, state, (LunarPhaseSensorBlockEntity) blockEntity);
     }
 
     @Override

@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "vertical_direction=up,trap_state=idle": {
+      "model": "apocalypse:block/dynamic_trap_idle"
+    },
+    "vertical_direction=up,trap_state=processing": {
+      "model": "apocalypse:block/dynamic_trap_processing"
+    },
+    "vertical_direction=up,trap_state=ready": {
+      "model": "apocalypse:block/dynamic_trap_ready"
+    },
+    "vertical_direction=up,trap_state=not_operational": {
+      "model": "apocalypse:block/dynamic_trap_not_operational"
+    },
+    "vertical_direction=down,trap_state=idle": {
+      "model": "apocalypse:block/dynamic_trap_idle",
+      "x": 180
+    },
+    "vertical_direction=down,trap_state=processing": {
+      "model": "apocalypse:block/dynamic_trap_processing",
+      "x": 180
+    },
+    "vertical_direction=down,trap_state=ready": {
+      "model": "apocalypse:block/dynamic_trap_ready",
+      "x": 180
+    },
+    "vertical_direction=down,trap_state=not_operational": {
+      "model": "apocalypse:block/dynamic_trap_not_operational",
+      "x": 180
+    }
+  }
+}

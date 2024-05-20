@@ -1,11 +1,11 @@
 package com.toast.apocalypse.api.impl;
 
 import com.google.common.collect.Lists;
-import com.toast.apocalypse.api.plugin.IRegistryHelper;
+import com.toast.apocalypse.api.plugin.RegistryHelper;
 import com.toast.apocalypse.common.core.Apocalypse;
 import org.apache.logging.log4j.Level;
 
-public final class RegistryHelper implements IRegistryHelper {
+public final class RegistryHelperImpl implements RegistryHelper {
 
     /** Keeping this here to avoid writing the
      *  same annoying symbols over and over again. */
@@ -13,7 +13,7 @@ public final class RegistryHelper implements IRegistryHelper {
     /** The ID of the plugin that is currently being loaded */
     private String currentPluginId = "no_plugin_id :(";
 
-    public RegistryHelper() {
+    public RegistryHelperImpl() {
 
     }
 
@@ -36,6 +36,6 @@ public final class RegistryHelper implements IRegistryHelper {
 
     /** Helper method for logging */
     private static void log(Level level, String message, Object... arguments) {
-        Apocalypse.LOGGER.log(level,"[{}] " + message, Lists.asList(RegistryHelper.class.getSimpleName(), arguments));
+        Apocalypse.LOGGER.log(level,"[{}] " + message, Lists.asList(RegistryHelperImpl.class.getSimpleName(), arguments));
     }
 }

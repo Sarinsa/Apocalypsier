@@ -1,9 +1,10 @@
 package com.toast.apocalypse.common.core;
 
 import com.toast.apocalypse.api.impl.ApocalypseAPI;
-import com.toast.apocalypse.api.impl.RegistryHelper;
+import com.toast.apocalypse.api.impl.RegistryHelperImpl;
 import com.toast.apocalypse.api.plugin.ApocalypsePlugin;
 import com.toast.apocalypse.api.plugin.IApocalypsePlugin;
+import com.toast.apocalypse.api.plugin.RegistryHelper;
 import com.toast.apocalypse.common.command.CommandRegister;
 import com.toast.apocalypse.common.command.argument.ApocalypseArgumentTypes;
 import com.toast.apocalypse.common.compat.top.TOPEntityInfoProvider;
@@ -13,12 +14,15 @@ import com.toast.apocalypse.common.core.config.ApocalypseServerConfig;
 import com.toast.apocalypse.common.core.difficulty.PlayerDifficultyManager;
 import com.toast.apocalypse.common.core.mod_event.EventRegistry;
 import com.toast.apocalypse.common.core.register.*;
-import com.toast.apocalypse.common.event.*;
+import com.toast.apocalypse.common.event.CapabilityAttachEvents;
+import com.toast.apocalypse.common.event.EntityEvents;
+import com.toast.apocalypse.common.event.PlayerEvents;
+import com.toast.apocalypse.common.event.VillagerTradeEvents;
+import com.toast.apocalypse.common.misc.MobWikiIndexes;
 import com.toast.apocalypse.common.network.PacketHandler;
 import com.toast.apocalypse.common.tag.ApocalypseBlockTags;
 import com.toast.apocalypse.common.tag.ApocalypseEntityTags;
 import com.toast.apocalypse.common.triggers.ApocalypseTriggers;
-import com.toast.apocalypse.common.misc.MobWikiIndexes;
 import com.toast.apocalypse.common.util.RainDamageTickHelper;
 import com.toast.apocalypse.common.util.VersionCheckHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -55,13 +59,23 @@ public class Apocalypse {
     private final PlayerDifficultyManager difficultyManager = new PlayerDifficultyManager();
 
     /** Registry helper instance */
-    private final RegistryHelper registryHelper = new RegistryHelper();
+    private final RegistryHelperImpl registryHelper = new RegistryHelperImpl();
 
     /** Api class instance */
     private final ApocalypseAPI api = new ApocalypseAPI();
 
     /** Packet handler instance */
     private final PacketHandler packetHandler = new PacketHandler();
+
+
+
+    // TODO LIST
+    //
+    // - Enable our mixins again before build!!!!
+    //
+    //
+    //
+
 
 
     public Apocalypse() {
@@ -80,6 +94,7 @@ public class Apocalypse {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Misc events
+        eventBus.addListener(ApocalypseTrapActions::onRegistryCreate);
         eventBus.addListener(ApocalypseEntities::createEntityAttributes);
         eventBus.addListener(ApocalypseEntities::registerEntitySpawnPlacement);
         eventBus.addListener(ApocalypseItems::onCreativeTabPopulate);
@@ -101,9 +116,11 @@ public class Apocalypse {
         ApocalypseItems.ITEMS.register(eventBus);
         ApocalypseSounds.SOUNDS.register(eventBus);
         ApocalypseEffects.EFFECTS.register(eventBus);
+        ApocalypseMenus.MENU_TYPES.register(eventBus);
         ApocalypseEntities.ENTITIES.register(eventBus);
         ApocalypseParticles.PARTICLES.register(eventBus);
         ApocalypseLootMods.LOOT_MODIFIERS.register(eventBus);
+        ApocalypseTrapActions.TRAP_ACTIONS.register(eventBus);
         ApocalypseBlockEntities.BLOCK_ENTITIES.register(eventBus);
         ApocalypseArgumentTypes.ARGUMENTS.register(eventBus);
 

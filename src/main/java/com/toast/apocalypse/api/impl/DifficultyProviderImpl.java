@@ -1,11 +1,10 @@
 package com.toast.apocalypse.api.impl;
 
-import com.toast.apocalypse.api.plugin.IDifficultyProvider;
 import com.toast.apocalypse.common.util.CapabilityHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
-public class DifficultyProvider implements IDifficultyProvider {
+public class DifficultyProviderImpl implements com.toast.apocalypse.api.plugin.DifficultyProvider {
 
     @Override
     public double getDifficultyRate(Player player) {
