@@ -11,7 +11,7 @@
 
   "block.apocalypse.lunar_phase_sensor": "Lunar Phase Sensor",
   "block.apocalypse.midnight_steel_block": "Midnight Steel Block",
-  "block.apocalypse.dynamic_trap": "Dynamic Trap",
+  "block.apocalypse.dynamic_trap": "Dynamic Trap [WIP]",
 
   "item.apocalypse.fragmented_soul": "Fragmented Soul",
   "item.apocalypse.midnight_steel_ingot": "Midnight Steel Ingot",
@@ -24,7 +24,7 @@
   "item.apocalypse.seeker_spawn_egg": "Seeker Spawn Egg",
   "item.apocalypse.grump_spawn_egg": "Grump Spawn Egg",
   "item.apocalypse.breecher_spawn_egg": "Breecher Spawn Egg",
-  "item.apocalypse.fearwolf_spawn_egg": "Fearwolf Spawn Egg (WIP)",
+  "item.apocalypse.fearwolf_spawn_egg": "Fearwolf Spawn Egg",
 
   "entity.apocalypse.breecher": "Breecher",
   "entity.apocalypse.grump": "Grump",
@@ -42,6 +42,11 @@
 
   "sound_event.apocalypse.subtitle.ghost_freeze": "Ghost freezes",
   "sound_event.apocalypse.subtitle.grump_rage": "Grump losing composure",
+
+  "apocalypse.trap_type.apocalypse.equipment_break.name": "Armor Shattering",
+  "apocalypse.trap_type.apocalypse.ghost_freeze.name": "Ghost Freezer",
+  "apocalypse.trap_type.apocalypse.equipment_break.description": "Breaks the armor of anyone or anything standing nearby",
+  "apocalypse.trap_type.apocalypse.ghost_freeze.description": "Temporarily immobilizes nearby ghosts, rendering them defenseless",
 
   "apocalypse.item_desc.fatherly_toast": "Mmmm, toasty!",
   "apocalypse.item.desc.fatherly_toast.level": "Toast Level: %s",
@@ -75,5 +80,7 @@
   "apocalypse.advancements.lunarium.description": "Craft a Lunarium Ingot from a piece of iron and a soul fragment. Neat!",
 
   "apocalypse.hud.difficulty": "Difficulty: %1$s",
-  "apocalypse.hud.rate": "Rate: %1$s"
+  "apocalypse.hud.rate": "Rate: %1$s",
+
+  "jei.recipe_category.apocalypse.title": "Trap Assembling"
 }

@@ -121,6 +121,8 @@ public class Apocalypse {
         ApocalypseParticles.PARTICLES.register(eventBus);
         ApocalypseLootMods.LOOT_MODIFIERS.register(eventBus);
         ApocalypseTrapActions.TRAP_ACTIONS.register(eventBus);
+        ApocalypseRecipeTypes.RECIPE_TYPES.register(eventBus);
+        ApocalypseRecipeSerializers.RECIPE_SERIALIZERS.register(eventBus);
         ApocalypseBlockEntities.BLOCK_ENTITIES.register(eventBus);
         ApocalypseArgumentTypes.ARGUMENTS.register(eventBus);
 

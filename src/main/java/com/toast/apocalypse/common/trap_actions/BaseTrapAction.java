@@ -1,25 +1,21 @@
 package com.toast.apocalypse.common.trap_actions;
 
-import com.toast.apocalypse.common.recipe.TrapRecipe;
+import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Objects;
 
 public abstract class BaseTrapAction {
 
-    private TrapRecipe recipe;
+    private String descriptionId;
 
-    public BaseTrapAction(TrapRecipe recipe) {
-        Objects.requireNonNull(recipe);
-        this.recipe = recipe;
+    public BaseTrapAction() {
     }
 
     public abstract void execute(Level level, BlockPos pos, boolean facingUp);
@@ -27,8 +23,13 @@ public abstract class BaseTrapAction {
     @Nonnull
     public abstract ResourceLocation iconLocation();
 
-    @Nonnull
-    public final TrapRecipe getTrapRecipe() {
-        return recipe;
+    public abstract MutableComponent getDescription();
+
+    public final String getNameTranslationKey(BaseTrapAction trapAction) {
+        if (descriptionId == null) {
+            ResourceLocation id = ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(trapAction);
+            descriptionId = "apocalypse.trap_type." + id.getNamespace() + "." + id.getPath() + ".name";
+        }
+        return descriptionId;
     }
 }

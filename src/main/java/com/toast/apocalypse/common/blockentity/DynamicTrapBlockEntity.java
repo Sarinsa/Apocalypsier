@@ -2,9 +2,11 @@ package com.toast.apocalypse.common.blockentity;
 
 import com.toast.apocalypse.common.block.DynamicTrapBlock;
 import com.toast.apocalypse.common.core.register.ApocalypseBlockEntities;
+import com.toast.apocalypse.common.core.register.ApocalypseRecipeTypes;
 import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.menus.DynamicTrapMenu;
 import com.toast.apocalypse.common.network.NetworkHelper;
+import com.toast.apocalypse.common.recipe.TrapRecipe;
 import com.toast.apocalypse.common.trap_actions.BaseTrapAction;
 import com.toast.apocalypse.common.util.References;
 import net.minecraft.core.BlockPos;
@@ -24,19 +26,27 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
 
     private NonNullList<ItemStack> items = NonNullList.withSize(9, ItemStack.EMPTY);
     private BaseTrapAction currentTrap = null;
-    private BaseTrapAction cachedTrap = null;
+    @Nullable
+    private TrapRecipe currentRecipe = null;
     private int preparationTime = 0;
     private int maxPreparationTime = 0;
+
+    private final RecipeManager.CachedCheck<DynamicTrapBlockEntity, TrapRecipe> quickCheck;
+
 
     protected final ContainerData dataAccess = new ContainerData() {
         public int get(int index) {
@@ -64,6 +74,7 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
 
     public DynamicTrapBlockEntity(BlockPos pos, BlockState state) {
         super(ApocalypseBlockEntities.DYNAMIC_TRAP.get(), pos, state);
+        quickCheck = RecipeManager.createCheck(ApocalypseRecipeTypes.TRAP_ASSEMBLING.get());
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, DynamicTrapBlockEntity trap) {
@@ -72,8 +83,8 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
                 trap.updateTrapBlock(DynamicTrapBlock.TrapState.PROCESSING);
 
                 if (++trap.preparationTime >= trap.maxPreparationTime) {
-                    trap.setCurrentTrap(trap.cachedTrap);
-                    trap.cachedTrap = null;
+                    trap.setCurrentTrap(trap.currentRecipe.getResultTrap());
+                    trap.currentRecipe = null;
                     trap.preparationTime = 0;
                     trap.maxPreparationTime = 0;
 
@@ -87,7 +98,7 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
                 }
             }
             else {
-                trap.cachedTrap = null;
+                trap.currentRecipe = null;
                 trap.preparationTime = 0;
                 trap.maxPreparationTime = 0;
                 trap.updateTrapBlock(DynamicTrapBlock.TrapState.IDLE);
@@ -96,12 +107,11 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
     }
 
     private boolean findValidRecipe() {
-        for (BaseTrapAction trapAction : ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getValues()) {
-            if (trapAction.getTrapRecipe().matches(items)) {
-                cachedTrap = trapAction;
-                maxPreparationTime = trapAction.getTrapRecipe().getPreparationTime();
-                return true;
-            }
+        currentRecipe = quickCheck.getRecipeFor(this, level).orElse(null);
+
+        if (currentRecipe != null) {
+            maxPreparationTime = currentRecipe.getPreparationTime();
+            return true;
         }
         return false;
     }
@@ -217,6 +227,10 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
     @Override
     public ItemStack getItem(int slot) {
         return items.get(slot);
+    }
+
+    public List<ItemStack> getContents() {
+        return items;
     }
 
     @Override

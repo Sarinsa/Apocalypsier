@@ -1,14 +1,17 @@
-package com.toast.apocalypse.datagen;
+package com.toast.apocalypse.datagen.recipe;
 
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.register.ApocalypseBlocks;
 import com.toast.apocalypse.common.core.register.ApocalypseItems;
+import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import net.minecraft.data.*;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -63,6 +66,23 @@ public class ApocalypseRecipeProvider extends RecipeProvider {
                 .pattern("###")
                 .define('#', ApocalypseItems.MIDNIGHT_STEEL_INGOT.get())
                 .unlockedBy("has_" + itemName(ApocalypseItems.MIDNIGHT_STEEL_INGOT.get()), has(ApocalypseItems.MIDNIGHT_STEEL_INGOT.get()))
+                .save(consumer);
+
+
+        //------------------------ TRAP ASSEMBLING ------------------------
+
+        TrapAssemblingRecipeBuilder.trap(ApocalypseTrapActions.GHOST_FREEZE.get(), 600)
+                .requires(ApocalypseItems.FRAGMENTED_SOUL.get(), 3)
+                .requires(Tags.Items.STRING, 2)
+                .requires(Items.SPLASH_POTION)
+                .requires(Blocks.ICE)
+                .save(consumer);
+
+        TrapAssemblingRecipeBuilder.trap(ApocalypseTrapActions.EQUIPMENT_BREAK.get(), 350)
+                .requires(Tags.Items.GEMS_QUARTZ, 2)
+                .requires(Items.IRON_BLOCK)
+                .requires(ItemTags.AXES)
+                .requires(ItemTags.PICKAXES)
                 .save(consumer);
     }
 

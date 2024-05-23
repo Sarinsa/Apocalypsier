@@ -23,7 +23,7 @@ public class ApocalypseBlocks {
 
     public static final RegistryObject<Block> LUNAR_PHASE_SENSOR = registerBlock("lunar_phase_sensor", LunarPhaseSensorBlock::new, CreativeModeTabs.REDSTONE_BLOCKS);
     public static final RegistryObject<Block> MIDNIGHT_STEEL_BLOCK = registerBlock("midnight_steel_block", MidnightSteelBlock::new, CreativeModeTabs.BUILDING_BLOCKS);
-    public static final RegistryObject<Block> DYNAMIC_TRAP = registerBlock("dynamic_trap", DynamicTrapBlock::new);
+    public static final RegistryObject<Block> DYNAMIC_TRAP = registerBlock("dynamic_trap", DynamicTrapBlock::new, CreativeModeTabs.REDSTONE_BLOCKS, CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
 
     @SafeVarargs

@@ -3,6 +3,7 @@ package com.toast.apocalypse.datagen;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.datagen.loot.ApocalypseLootModProvider;
 import com.toast.apocalypse.datagen.loot.ApocalypseLootTableProvider;
+import com.toast.apocalypse.datagen.recipe.ApocalypseRecipeProvider;
 import com.toast.apocalypse.datagen.tag.ApocalypseBlockTagProvider;
 import com.toast.apocalypse.datagen.tag.ApocalypseEntityTagProvider;
 import com.toast.apocalypse.datagen.tag.ApocalypseItemTagProvider;

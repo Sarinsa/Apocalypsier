@@ -7,7 +7,9 @@ public class References {
     public static final long MAX_DIFFICULTY_HARD_LIMIT = 100000L * DAY_LENGTH;
     public static final long DEFAULT_COLOR_CHANGE = 240L * DAY_LENGTH;
 
-    // Translation keys
+    //
+    // TRANSLATION KEYS
+    //
     public static final String FATHERLY_TOAST_DESC = "apocalypse.item_desc.fatherly_toast";
     public static final String FATHERLY_TOAST_LEVEL = "apocalypse.item.desc.fatherly_toast.level";
     public static final String BUCKET_HELM_DESC = "apocalypse.item_desc.bucket_helm";
@@ -40,6 +42,10 @@ public class References {
 
     public static final String DYNAMIC_TRAP_CONTAINER = "container.apocalypse.dynamic_trap";
 
+    //
+    // JEI
+    //
+    public static final String TRAP_CATEGORY_TITLE = "jei.recipe_category.apocalypse.title";
 
     //
     // MOB WIKI

@@ -2,9 +2,12 @@ package com.toast.apocalypse.common.trap_actions;
 
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.register.ApocalypseItems;
+import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.entity.living.Ghost;
 import com.toast.apocalypse.common.recipe.TrapRecipe;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -17,27 +20,11 @@ import java.util.List;
 
 public class GhostTrap extends BaseTrapAction {
 
-    private static final ResourceLocation ICON = Apocalypse.resourceLoc("textures/trap_icons/ghost_trap.png");
+    private static final MutableComponent DESCRIPTION = Component.translatable("apocalypse.trap_type.apocalypse.ghost_freeze.description");
+    private static final ResourceLocation ICON = Apocalypse.resourceLoc("textures/trap_icons/ghost_freeze.png");
 
 
     public GhostTrap() {
-        super(new TrapRecipe(
-                200,
-                new Ingredient[] {
-                        Ingredient.of(ApocalypseItems.FRAGMENTED_SOUL.get()),
-                        Ingredient.of(ApocalypseItems.FRAGMENTED_SOUL.get()),
-                        Ingredient.of(ApocalypseItems.FRAGMENTED_SOUL.get()),
-                        Ingredient.of(Items.SPLASH_POTION),
-                        Ingredient.of(Tags.Items.STRING),
-                        Ingredient.of(Tags.Items.STRING)
-                }
-        ));
-    }
-
-    @Override
-    @Nonnull
-    public ResourceLocation iconLocation() {
-        return ICON;
     }
 
     @Override
@@ -50,5 +37,16 @@ public class GhostTrap extends BaseTrapAction {
                     ghost.freeze(200);
             }
         }
+    }
+
+    @Override
+    @Nonnull
+    public ResourceLocation iconLocation() {
+        return ICON;
+    }
+
+    @Override
+    public MutableComponent getDescription() {
+        return DESCRIPTION;
     }
 }
