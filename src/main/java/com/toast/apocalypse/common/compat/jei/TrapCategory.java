@@ -14,7 +14,6 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -23,15 +22,12 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class TrapCategory implements IRecipeCategory<TrapRecipe> {
+public class TrapCategory extends BaseRecipeCategory<TrapRecipe> {
 
 
     private static final Component TITLE = Component.translatable(References.TRAP_CATEGORY_TITLE);
     private static final ResourceLocation GUI_TEXTURE = Apocalypse.resourceLoc("textures/gui/container/dynamic_trap.png");
     private static final ResourceLocation RESULT_SLOT = Apocalypse.resourceLoc("textures/gui/container/components/trap_result_slot.png");
-
-    private final IJeiHelpers jeiHelpers;
-    private final IGuiHelper guiHelper;
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -44,8 +40,7 @@ public class TrapCategory implements IRecipeCategory<TrapRecipe> {
 
 
     public TrapCategory(IJeiHelpers jeiHelpers) {
-        this.jeiHelpers = jeiHelpers;
-        this.guiHelper = jeiHelpers.getGuiHelper();
+        super(jeiHelpers);
         this.background = guiHelper.createBlankDrawable(width, height);
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(ApocalypseBlocks.DYNAMIC_TRAP.get()));
         this.slotBackground = guiHelper.getSlotDrawable();
@@ -102,6 +97,8 @@ public class TrapCategory implements IRecipeCategory<TrapRecipe> {
         progress.draw(guiGraphics, 64, 18);
         resultSlotBackground.draw(guiGraphics, width - (width / 3) - 8, (height / 2) - 16);
         guiGraphics.blit(recipe.getResultTrap().iconLocation(), width - (width / 3), (height / 2) - 8, 0, 0, 15, 15, 16, 16);
+
+        drawPreparationTime(recipe, recipe.getPreparationTime(), guiGraphics, height - 10);
     }
 
     @Override
@@ -115,10 +112,5 @@ public class TrapCategory implements IRecipeCategory<TrapRecipe> {
                     trapAction.getDescription().withStyle(ChatFormatting.GRAY));
         }
         return List.of();
-    }
-
-    private boolean hoveringOverSlotAt(int posX, int posY, double mouseX, double mouseY) {
-        return mouseX >= posX && mouseX <= (posX + 16)
-                && mouseY >= posY && mouseY <= posY + 16;
     }
 }
