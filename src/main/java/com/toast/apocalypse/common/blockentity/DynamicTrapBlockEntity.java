@@ -26,7 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -119,17 +118,15 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
     @SuppressWarnings("ConstantConditions")
     public void activateTrap() {
         if (getCurrentTrap() != null) {
-            if (!getLevel().isClientSide) {
-                getLevel().playSound(null, getBlockPos(), SoundEvents.DISPENSER_DISPENSE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
             getCurrentTrap().execute(level, getBlockPos(), getBlockState().getValue(DynamicTrapBlock.VERTICAL_DIRECTION) == Direction.UP);
             setCurrentTrap(null);
-            NetworkHelper.sendDynTrapUpdate((ServerLevel) level, this);
-        }
-        else {
+
             if (!getLevel().isClientSide) {
-                getLevel().playSound(null, getBlockPos(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                NetworkHelper.sendDynTrapUpdate((ServerLevel) level, this);
             }
+        }
+        if (!level.isClientSide) {
+            level.playSound(null, getBlockPos(), SoundEvents.DISPENSER_DISPENSE, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
     }
 

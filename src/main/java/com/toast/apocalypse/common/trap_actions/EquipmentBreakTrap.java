@@ -28,7 +28,7 @@ public class EquipmentBreakTrap extends BaseTrapAction {
 
     @Override
     public void execute(Level level, BlockPos pos, boolean facingUp) {
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(15));
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(20));
 
         if (!entities.isEmpty()) {
             for (LivingEntity livingEntity : entities) {

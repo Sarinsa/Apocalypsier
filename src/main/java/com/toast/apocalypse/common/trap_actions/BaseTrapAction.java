@@ -25,6 +25,7 @@ public abstract class BaseTrapAction {
 
     public abstract MutableComponent getDescription();
 
+    @SuppressWarnings("ConstantConditions")
     public final String getNameTranslationKey(BaseTrapAction trapAction) {
         if (descriptionId == null) {
             ResourceLocation id = ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(trapAction);

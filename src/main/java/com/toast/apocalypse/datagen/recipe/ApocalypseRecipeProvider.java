@@ -68,18 +68,31 @@ public class ApocalypseRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_" + itemName(ApocalypseItems.MIDNIGHT_STEEL_INGOT.get()), has(ApocalypseItems.MIDNIGHT_STEEL_INGOT.get()))
                 .save(consumer);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ApocalypseBlocks.DYNAMIC_TRAP.get(),1)
+                .pattern("LDL")
+                .pattern("SCS")
+                .pattern("SRS")
+                .define('L', ItemTags.LOGS_THAT_BURN)
+                .define('D', Items.DISPENSER)
+                .define('S', Tags.Items.COBBLESTONE)
+                .define('C', Items.CRAFTING_TABLE)
+                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .unlockedBy("has_" + itemName(Items.DISPENSER), has(Items.DISPENSER))
+                .save(consumer);
+
 
         //------------------------ TRAP ASSEMBLING ------------------------
 
         TrapAssemblingRecipeBuilder.trap(ApocalypseTrapActions.GHOST_FREEZE.get(), 600)
                 .requires(ApocalypseItems.FRAGMENTED_SOUL.get(), 3)
                 .requires(Tags.Items.STRING, 2)
-                .requires(Items.SPLASH_POTION)
+                .requires(Items.SNOW_BLOCK)
                 .requires(Blocks.ICE)
                 .save(consumer);
 
         TrapAssemblingRecipeBuilder.trap(ApocalypseTrapActions.EQUIPMENT_BREAK.get(), 350)
-                .requires(Tags.Items.GEMS_QUARTZ, 2)
+                .requires(Tags.Items.GEMS_QUARTZ)
+                .requires(Tags.Items.GEMS_AMETHYST)
                 .requires(Items.IRON_BLOCK)
                 .requires(ItemTags.AXES)
                 .requires(ItemTags.PICKAXES)
