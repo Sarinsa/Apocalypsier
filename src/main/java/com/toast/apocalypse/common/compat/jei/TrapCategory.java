@@ -3,15 +3,13 @@ package com.toast.apocalypse.common.compat.jei;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.register.ApocalypseBlocks;
 import com.toast.apocalypse.common.recipe.TrapRecipe;
-import com.toast.apocalypse.common.trap_actions.BaseTrapAction;
+import com.toast.apocalypse.api.BaseTrapAction;
 import com.toast.apocalypse.common.util.References;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.ingredients.IIngredientTypeWithSubtypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -110,7 +108,7 @@ public class TrapCategory extends BaseRecipeCategory<TrapRecipe> {
             return List.of(
                     Component.translatable(trapAction.getNameTranslationKey(trapAction)),
                     Component.literal(""),
-                    trapAction.getDescription().withStyle(ChatFormatting.GRAY));
+                    Component.translatable(trapAction.getDescriptionKey()).withStyle(ChatFormatting.GRAY));
         }
         return List.of();
     }

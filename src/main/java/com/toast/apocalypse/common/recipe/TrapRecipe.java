@@ -1,22 +1,20 @@
 package com.toast.apocalypse.common.recipe;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import com.mojang.datafixers.util.Pair;
+import com.toast.apocalypse.api.register.ModRegistries;
 import com.toast.apocalypse.common.blockentity.DynamicTrapBlockEntity;
 import com.toast.apocalypse.common.core.register.ApocalypseRecipeSerializers;
 import com.toast.apocalypse.common.core.register.ApocalypseRecipeTypes;
 import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
-import com.toast.apocalypse.common.trap_actions.BaseTrapAction;
+import com.toast.apocalypse.api.BaseTrapAction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -143,11 +141,11 @@ public final class TrapRecipe implements Recipe<DynamicTrapBlockEntity> {
             if (ingredients.size() > MAX_INGREDIENTS) {
                 throw new JsonParseException("Too many ingredients for trap assembling recipe. The maximum is 9");
             }
-            if (trapId == null || !ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().containsKey(trapId)) {
+            if (trapId == null || !ModRegistries.TRAP_ACTIONS_REGISTRY.get().containsKey(trapId)) {
                 throw new JsonParseException("No valid result trap type found for assembling recipe. ID is either malformed or doesn't exist in the registry.");
             }
             else {
-                return new TrapRecipe(id, ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getValue(trapId), preparationTime, ingredients);
+                return new TrapRecipe(id, ModRegistries.TRAP_ACTIONS_REGISTRY.get().getValue(trapId), preparationTime, ingredients);
             }
         }
 
@@ -177,12 +175,12 @@ public final class TrapRecipe implements Recipe<DynamicTrapBlockEntity> {
             for (int i = ingredients.size(); i < TrapRecipe.MAX_INGREDIENTS; i++) {
                 ingredients.add(Ingredient.EMPTY);
             }
-            return new TrapRecipe(id, ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getValue(trapId), preparationTime, ingredients);
+            return new TrapRecipe(id, ModRegistries.TRAP_ACTIONS_REGISTRY.get().getValue(trapId), preparationTime, ingredients);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf byteBuf, TrapRecipe trapRecipe) {
-            byteBuf.writeResourceLocation(ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(trapRecipe.getResultTrap()));
+            byteBuf.writeResourceLocation(ModRegistries.TRAP_ACTIONS_REGISTRY.get().getKey(trapRecipe.getResultTrap()));
             byteBuf.writeInt(trapRecipe.preparationTime);
             byteBuf.writeInt(trapRecipe.ingredients.size());
 

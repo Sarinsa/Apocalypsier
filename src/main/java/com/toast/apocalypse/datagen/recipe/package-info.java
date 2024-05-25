@@ -1,7 +1,7 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.toast.apocalypse.client.screen;
+package com.toast.apocalypse.datagen.recipe;
 
-import com.toast.apocalypse.api.misc.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

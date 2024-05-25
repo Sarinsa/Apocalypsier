@@ -1,11 +1,9 @@
 package com.toast.apocalypse.common.trap_actions;
 
+import com.toast.apocalypse.api.BaseTrapAction;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.config.ApocalypseCommonConfig;
-import com.toast.apocalypse.common.core.register.ApocalypseItems;
-import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.entity.living.Ghost;
-import com.toast.apocalypse.common.recipe.TrapRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -13,18 +11,15 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
 public class GhostTrap extends BaseTrapAction {
 
-    private static final MutableComponent DESCRIPTION = Component.translatable("apocalypse.trap_type.apocalypse.ghost_freeze.description");
+    private static final String DESCRIPTION_KEY = "apocalypse.trap_type.apocalypse.ghost_freeze.description";
     private static final ResourceLocation ICON = Apocalypse.resourceLoc("textures/trap_icons/ghost_freeze.png");
 
 
@@ -63,7 +58,7 @@ public class GhostTrap extends BaseTrapAction {
     }
 
     @Override
-    public MutableComponent getDescription() {
-        return DESCRIPTION;
+    public String getDescriptionKey() {
+        return DESCRIPTION_KEY;
     }
 }

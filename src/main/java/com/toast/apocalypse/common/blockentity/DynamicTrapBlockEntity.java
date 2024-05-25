@@ -1,5 +1,6 @@
 package com.toast.apocalypse.common.blockentity;
 
+import com.toast.apocalypse.api.register.ModRegistries;
 import com.toast.apocalypse.common.block.DynamicTrapBlock;
 import com.toast.apocalypse.common.core.register.ApocalypseBlockEntities;
 import com.toast.apocalypse.common.core.register.ApocalypseRecipeTypes;
@@ -7,7 +8,7 @@ import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.menus.DynamicTrapMenu;
 import com.toast.apocalypse.common.network.NetworkHelper;
 import com.toast.apocalypse.common.recipe.TrapRecipe;
-import com.toast.apocalypse.common.trap_actions.BaseTrapAction;
+import com.toast.apocalypse.api.BaseTrapAction;
 import com.toast.apocalypse.common.util.References;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -180,8 +181,8 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
         if (compoundTag.contains("CurrentTrap", Tag.TAG_STRING)) {
             ResourceLocation id = ResourceLocation.tryParse(compoundTag.getString("CurrentTrap"));
 
-            if (ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().containsKey(id)) {
-                currentTrap = ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getValue(id);
+            if (ModRegistries.TRAP_ACTIONS_REGISTRY.get().containsKey(id)) {
+                currentTrap = ModRegistries.TRAP_ACTIONS_REGISTRY.get().getValue(id);
             }
         }
     }
@@ -195,8 +196,8 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
         compoundTag.putInt("CraftingTime", preparationTime);
 
         if (currentTrap != null) {
-            if (ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().containsValue(currentTrap)) {
-                compoundTag.putString("CurrentTrap", ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(currentTrap).toString());
+            if (ModRegistries.TRAP_ACTIONS_REGISTRY.get().containsValue(currentTrap)) {
+                compoundTag.putString("CurrentTrap", ModRegistries.TRAP_ACTIONS_REGISTRY.get().getKey(currentTrap).toString());
             }
         }
     }
@@ -270,8 +271,8 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
         CompoundTag compoundTag = new CompoundTag();
 
         if (currentTrap != null) {
-            if (ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().containsValue(currentTrap)) {
-                compoundTag.putString("CurrentTrap", ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(currentTrap).toString());
+            if (ModRegistries.TRAP_ACTIONS_REGISTRY.get().containsValue(currentTrap)) {
+                compoundTag.putString("CurrentTrap", ModRegistries.TRAP_ACTIONS_REGISTRY.get().getKey(currentTrap).toString());
             }
         }
         return compoundTag;
@@ -282,8 +283,8 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
         if (tag.contains("CurrentTrap", Tag.TAG_STRING)) {
             ResourceLocation id = ResourceLocation.tryParse(tag.getString("CurrentTrap"));
 
-            if (ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().containsKey(id)) {
-                currentTrap = ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getValue(id);
+            if (ModRegistries.TRAP_ACTIONS_REGISTRY.get().containsKey(id)) {
+                currentTrap = ModRegistries.TRAP_ACTIONS_REGISTRY.get().getValue(id);
             }
         }
     }

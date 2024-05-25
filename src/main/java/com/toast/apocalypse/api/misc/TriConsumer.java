@@ -1,4 +1,4 @@
-package com.toast.apocalypse.api;
+package com.toast.apocalypse.api.misc;
 
 import java.util.Objects;
 

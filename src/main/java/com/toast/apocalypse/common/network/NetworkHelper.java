@@ -1,5 +1,6 @@
 package com.toast.apocalypse.common.network;
 
+import com.toast.apocalypse.api.register.ModRegistries;
 import com.toast.apocalypse.common.blockentity.DynamicTrapBlockEntity;
 import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.entity.living.Grump;
@@ -108,7 +109,7 @@ public class NetworkHelper {
 
         String id = trap.getCurrentTrap() == null
                 ? ""
-                : ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(trap.getCurrentTrap()).toString();
+                : ModRegistries.TRAP_ACTIONS_REGISTRY.get().getKey(trap.getCurrentTrap()).toString();
 
         for (ServerPlayer player : level.players()) {
             PacketHandler.sendToClient(new S2CDynTrap(trap.getBlockPos(), id), player);

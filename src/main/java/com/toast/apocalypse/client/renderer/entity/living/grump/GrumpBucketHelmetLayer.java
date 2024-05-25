@@ -2,28 +2,21 @@ package com.toast.apocalypse.client.renderer.entity.living.grump;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.toast.apocalypse.api.MethodsReturnNonnullByDefault;
 import com.toast.apocalypse.client.ApocalypseModelLayers;
-import com.toast.apocalypse.client.renderer.entity.living.ghost.GhostModel;
-import com.toast.apocalypse.client.renderer.entity.living.seeker.SeekerEyesLayer;
 import com.toast.apocalypse.client.renderer.model.armor.GrumpBucketHelmetModel;
 import com.toast.apocalypse.common.core.register.ApocalypseItems;
 import com.toast.apocalypse.common.entity.living.Grump;
 import com.toast.apocalypse.common.item.BucketHelmetItem;
-import net.minecraft.client.model.CreeperModel;
 import net.minecraft.client.model.GhastModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 public class GrumpBucketHelmetLayer<T extends Grump, M extends GhastModel<T>> extends RenderLayer<T, M> {
 

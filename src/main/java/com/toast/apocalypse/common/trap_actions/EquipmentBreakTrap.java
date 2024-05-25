@@ -1,18 +1,14 @@
 package com.toast.apocalypse.common.trap_actions;
 
+import com.toast.apocalypse.api.BaseTrapAction;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.config.ApocalypseCommonConfig;
-import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
-import com.toast.apocalypse.common.recipe.TrapRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +18,7 @@ import java.util.List;
 public class EquipmentBreakTrap extends BaseTrapAction {
 
     private static final ResourceLocation ICON = Apocalypse.resourceLoc("textures/trap_icons/equipment_break.png");
-    private static final MutableComponent DESCRIPTION = Component.translatable("apocalypse.trap_type.apocalypse.equipment_break.description");
+    private static final String DESCRIPTION_KEY = "apocalypse.trap_type.apocalypse.equipment_break.description";
 
     public EquipmentBreakTrap() {
     }
@@ -52,7 +48,7 @@ public class EquipmentBreakTrap extends BaseTrapAction {
     }
 
     @Override
-    public MutableComponent getDescription() {
-        return DESCRIPTION;
+    public String getDescriptionKey() {
+        return DESCRIPTION_KEY;
     }
 }

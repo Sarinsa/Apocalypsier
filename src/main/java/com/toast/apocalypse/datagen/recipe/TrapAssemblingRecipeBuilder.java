@@ -3,9 +3,10 @@ package com.toast.apocalypse.datagen.recipe;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.toast.apocalypse.api.register.ModRegistries;
 import com.toast.apocalypse.common.core.register.ApocalypseRecipeSerializers;
 import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
-import com.toast.apocalypse.common.trap_actions.BaseTrapAction;
+import com.toast.apocalypse.api.BaseTrapAction;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -76,7 +77,7 @@ public class TrapAssemblingRecipeBuilder implements RecipeBuilder {
 
     // Does nothing
     @Override
-    public RecipeBuilder group(String s) {
+    public RecipeBuilder group(@Nullable String s) {
         return null;
     }
 
@@ -95,12 +96,14 @@ public class TrapAssemblingRecipeBuilder implements RecipeBuilder {
         recipeSaver.accept(new Result(id.withSuffix("_trap"), result, preparationTime, ingredients));
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void save(Consumer<FinishedRecipe> recipeSaver) {
-        save(recipeSaver, ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(getTrapResult()));
+        save(recipeSaver, ModRegistries.TRAP_ACTIONS_REGISTRY.get().getKey(getTrapResult()));
     }
 
 
+    @SuppressWarnings("ClassCanBeRecord")
     public static class Result implements FinishedRecipe {
         private final ResourceLocation id;
         private final BaseTrapAction result;
@@ -126,7 +129,7 @@ public class TrapAssemblingRecipeBuilder implements RecipeBuilder {
 
             jsonObject.add("ingredients", jsonarray);
             JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("trap_type", ApocalypseTrapActions.TRAP_ACTIONS_REGISTRY.get().getKey(result).toString());
+            jsonobject.addProperty("trap_type", ModRegistries.TRAP_ACTIONS_REGISTRY.get().getKey(result).toString());
 
             if (preparationTime < 0)
                 throw new IllegalArgumentException("Preparation time can not be negative");

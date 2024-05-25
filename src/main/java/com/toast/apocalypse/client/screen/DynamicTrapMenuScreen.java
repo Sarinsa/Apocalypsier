@@ -3,18 +3,15 @@ package com.toast.apocalypse.client.screen;
 import com.toast.apocalypse.common.blockentity.DynamicTrapBlockEntity;
 import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.menus.DynamicTrapMenu;
-import com.toast.apocalypse.common.trap_actions.BaseTrapAction;
+import com.toast.apocalypse.api.BaseTrapAction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.DispenserScreen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +53,9 @@ public class DynamicTrapMenuScreen extends AbstractContainerScreen<DynamicTrapMe
 
                         components.add(Component.translatable(trapType.getNameTranslationKey(trapType)));
 
-                        if (trapType.getDescription() != null) {
+                        if (trapType.getDescriptionKey() != null) {
                             components.add(Component.literal(""));
-                            components.add(trapType.getDescription().withStyle(ChatFormatting.GRAY));
+                            components.add(Component.translatable(trapType.getDescriptionKey()).withStyle(ChatFormatting.GRAY));
                         }
                         guiGraphics.renderComponentTooltip(font, components, mouseX, mouseY);
                     }
