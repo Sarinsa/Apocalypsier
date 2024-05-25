@@ -1022,7 +1022,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
         }
 
         public boolean canUse() {
-            if (!grump.hasOwner())
+            if (!grump.hasOwner() || grump.getTarget() != null)
                 return false;
 
             if (mob.getRandom().nextFloat() >= probability) {
