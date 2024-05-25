@@ -83,7 +83,7 @@ public class TrapCategory extends BaseRecipeCategory<TrapRecipe> {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                builder.addSlot(RecipeIngredientRole.INPUT, (i * 18) + 1, (j * 18) + 1)
+                builder.addSlot(RecipeIngredientRole.INPUT, (j * 18) + 1, (i * 18) + 1)
                         .addIngredients(recipe.getIngredients().get(slotIndex))
                         .setBackground(slotBackground, -1, -1);
 
