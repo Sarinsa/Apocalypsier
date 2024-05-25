@@ -47,7 +47,6 @@ public class ApocalypseClientConfig {
         private final ForgeConfigSpec.BooleanValue keybindOnly;
 
         private final ForgeConfigSpec.ConfigValue<String> rainColor;
-        private final ForgeConfigSpec.ConfigValue<String> snowColor;
 
 
         private Client(ForgeConfigSpec.Builder configBuilder) {
@@ -76,13 +75,13 @@ public class ApocalypseClientConfig {
                     .defineEnum("worldConfigButtonPosWidth", PositionWidthAnchor.MIDDLE, PositionWidthAnchor.values());
 
             this.worldConfigButtonPosHeight = configBuilder.comment("Determines the base Y position of the Apocalypse world config button.")
-                    .defineEnum("worldConfigButtonPosHeight", PositionHeightAnchor.TOP, PositionHeightAnchor.values());
+                    .defineEnum("worldConfigButtonPosHeight", PositionHeightAnchor.BOTTOM, PositionHeightAnchor.values());
 
             this.worldConfigButtonXOffset = configBuilder.comment("Additional X offset.")
-                    .defineInRange("worldConfigButtonXOffset", 175, -10000, 10000);
+                    .defineInRange("worldConfigButtonXOffset", 0, -10000, 10000);
 
             this.worldConfigButtonYOffset = configBuilder.comment("Additional Y offset.")
-                    .defineInRange("worldConfigButtonYOffset", 100, -10000, 10000);
+                    .defineInRange("worldConfigButtonYOffset", -80, -10000, 10000);
             configBuilder.pop();
 
             configBuilder.push("acid_rain_properties");
@@ -99,20 +98,6 @@ public class ApocalypseClientConfig {
                                     return false;
                                 }
                             });
-
-            this.snowColor = configBuilder.comment("Decides the color to be used for snow during acid rain. Must be hex color. Keep in mind that the color of the snow texture itself will \"mix\" with this setting.")
-                    .define("snowColor", "#52FF3F", (o) -> {
-                        try {
-                            if (o instanceof String) {
-                                Color.decode((String) o);
-                                return true;
-                            }
-                            return false;
-                        }
-                        catch(NumberFormatException ignored) {
-                            return false;
-                        }
-                    });
 
             configBuilder.pop();
         }
@@ -159,10 +144,6 @@ public class ApocalypseClientConfig {
 
         public String getAcidRainColor() {
             return this.rainColor.get();
-        }
-
-        public String getSnowColor() {
-            return this.snowColor.get();
         }
     }
 }
