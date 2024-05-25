@@ -168,6 +168,9 @@ public class ApocalypseCommonConfig {
         private final ForgeConfigSpec.DoubleValue potionEffectLunarChance;
         private final ForgeConfigSpec.DoubleValue potionEffectMaxChance;
 
+        // Traps
+        private final ForgeConfigSpec.IntValue ghostFreezeTrapRange;
+        private final ForgeConfigSpec.IntValue armorShatterTrapRange;
 
         // Misc
         private final ForgeConfigSpec.BooleanValue destroyerTargetRespawnPos;
@@ -426,6 +429,14 @@ public class ApocalypseCommonConfig {
 
             this.potionEffectMaxChance = configBuilder.comment("The maximum potion effect chance that can be given over time. Default is 0.95 (95% chance).")
                     .defineInRange("potionEffectMaxChance", 0.95D, 0.0D, 1.0D);
+            configBuilder.pop();
+
+            configBuilder.push("dynamic_trap");
+            this.ghostFreezeTrapRange = configBuilder.comment("The range in blocks of which the Ghost Freeze trap will affect ghosts.")
+                            .defineInRange("ghostFreezeTrapRange", 20, 1, 60);
+            this.armorShatterTrapRange = configBuilder.comment("The range in blocks of which the Armor Shatter trap will affect mobs.")
+                    .defineInRange("ghostFreezeTrapRange", 20, 1, 60);
+
             configBuilder.pop();
 
             configBuilder.push("misc");
@@ -744,6 +755,15 @@ public class ApocalypseCommonConfig {
         }
 
 
+        //
+        // TRAPS
+        //
+        public int getGhostFreezeTrapRange() {
+            return ghostFreezeTrapRange.get();
+        }
+        public int getArmorShatterTrapRange() {
+            return armorShatterTrapRange.get();
+        }
 
         //
         // MISC

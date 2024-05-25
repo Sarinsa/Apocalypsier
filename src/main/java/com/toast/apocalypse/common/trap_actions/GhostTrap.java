@@ -1,6 +1,7 @@
 package com.toast.apocalypse.common.trap_actions;
 
 import com.toast.apocalypse.common.core.Apocalypse;
+import com.toast.apocalypse.common.core.config.ApocalypseCommonConfig;
 import com.toast.apocalypse.common.core.register.ApocalypseItems;
 import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.entity.living.Ghost;
@@ -45,7 +46,7 @@ public class GhostTrap extends BaseTrapAction {
                     0.1D
             );
         }
-        List<Ghost> nearbyGhosts = level.getEntitiesOfClass(Ghost.class, new AABB(pos).inflate(20));
+        List<Ghost> nearbyGhosts = level.getEntitiesOfClass(Ghost.class, new AABB(pos).inflate(ApocalypseCommonConfig.COMMON.getGhostFreezeTrapRange()));
 
         if (!nearbyGhosts.isEmpty()) {
             for (Ghost ghost : nearbyGhosts) {

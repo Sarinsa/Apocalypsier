@@ -1,6 +1,7 @@
 package com.toast.apocalypse.common.trap_actions;
 
 import com.toast.apocalypse.common.core.Apocalypse;
+import com.toast.apocalypse.common.core.config.ApocalypseCommonConfig;
 import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
 import com.toast.apocalypse.common.recipe.TrapRecipe;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ public class EquipmentBreakTrap extends BaseTrapAction {
 
     @Override
     public void execute(Level level, BlockPos pos, boolean facingUp) {
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(20));
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(ApocalypseCommonConfig.COMMON.getArmorShatterTrapRange()));
 
         if (!entities.isEmpty()) {
             for (LivingEntity livingEntity : entities) {
