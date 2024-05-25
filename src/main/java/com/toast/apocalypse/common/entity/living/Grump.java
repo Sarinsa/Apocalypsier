@@ -85,7 +85,7 @@ public class Grump extends AbstractFullMoonGhast implements ContainerListener {
     protected static final EntityDataAccessor<Boolean> STAND_BY = SynchedEntityData.defineId(Grump.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<ItemStack> HEAD_ITEM = SynchedEntityData.defineId(Grump.class, EntityDataSerializers.ITEM_STACK);
 
-    private static final AttributeModifier RAGE_SPEED = new AttributeModifier("ApocalypseGrumpRAGE_SPEED", 2.0D, AttributeModifier.Operation.ADDITION);
+    private static final AttributeModifier RAGE_SPEED = new AttributeModifier("ApocalypseGrumpRAGE_SPEED", 1.5D, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier RAGE_KNOCKBACK = new AttributeModifier("ApocalypseGrumpRAGE_KNOCKBACK", 3.0D, AttributeModifier.Operation.ADDITION);
 
 
