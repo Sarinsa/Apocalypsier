@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
-//@Mixin(ServerLevel.class)
+@Mixin(ServerLevel.class)
 public abstract class ServerWorldMixin extends Level implements WorldGenLevel {
 
 
@@ -35,8 +35,8 @@ public abstract class ServerWorldMixin extends Level implements WorldGenLevel {
         super(levelData, levelId, registryAccess, dimensionType, profilerFiller, isClient, isDebug, seed, maxChainedNeighborUpdates);
     }
 
-    //@Final
-    //@Inject(method = "setDayTime", at = @At("HEAD"), cancellable = true)
+    @Final
+    @Inject(method = "setDayTime", at = @At("HEAD"), cancellable = true)
     public void onSetDayTime(long time, CallbackInfo ci) {
         ServerMixinHooks.onServerWorldSetDayTime((ServerLevel) (Object) this, ci);
     }

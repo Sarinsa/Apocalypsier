@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-//@Mixin(Creeper.class)
+@Mixin(Creeper.class)
 public abstract class CreeperEntityMixin extends Monster implements PowerableMob {
 
     protected CreeperEntityMixin(EntityType<? extends Creeper> entityType, Level level) {
@@ -24,7 +24,6 @@ public abstract class CreeperEntityMixin extends Monster implements PowerableMob
      * Creepers from spawning lingering effect
      * clouds that can grant "infinite" buffs.
      */
-    /*
     @Redirect(
             method = "spawnLingeringCloud",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"))
@@ -32,6 +31,4 @@ public abstract class CreeperEntityMixin extends Monster implements PowerableMob
         CommonMixinHooks.capAreaEffectCloudDurations((AreaEffectCloud) entity);
         return level.addFreshEntity(entity);
     }
-
-     */
 }
