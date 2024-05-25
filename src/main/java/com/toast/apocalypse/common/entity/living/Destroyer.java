@@ -441,7 +441,7 @@ public class Destroyer extends AbstractFullMoonGhast {
             else if (destroyer.getTarget() instanceof ServerPlayer serverPlayer) {
                 double x, z;
 
-                if (!destroyer.attackedBySiegeTarget() && serverPlayer.getRespawnPosition() != null && (serverPlayer.getRespawnDimension().equals(destroyer.level().dimension())) && isPlayerSpawnValid(serverPlayer.getRespawnPosition(), destroyer.level())) {
+                if (!destroyer.attackedBySiegeTarget() && destroyer.isTargetingSpawnPoint && serverPlayer.getRespawnPosition() != null && (serverPlayer.getRespawnDimension().equals(destroyer.level().dimension())) && isPlayerSpawnValid(serverPlayer.getRespawnPosition(), destroyer.level())) {
                     BlockPos respawnPos = serverPlayer.getRespawnPosition();
                     x = respawnPos.getX() - destroyer.getX();
                     z = respawnPos.getZ() - destroyer.getZ();
