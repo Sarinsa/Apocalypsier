@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.toast.apocalypse.api.register.ModRegistries;
 import com.toast.apocalypse.common.blockentity.DynamicTrapBlockEntity;
+import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.core.register.ApocalypseRecipeSerializers;
 import com.toast.apocalypse.common.core.register.ApocalypseRecipeTypes;
 import com.toast.apocalypse.common.core.register.ApocalypseTrapActions;
@@ -156,7 +157,7 @@ public final class TrapRecipe implements Recipe<DynamicTrapBlockEntity> {
                 Ingredient ingredient = Ingredient.fromJson(jsonArray.get(i), false);
                 list.add(ingredient);
             }
-            for (int i = list.size(); i < TrapRecipe.MAX_INGREDIENTS; i++) {
+            for (int i = list.size(); i < MAX_INGREDIENTS; i++) {
                 list.add(Ingredient.EMPTY);
             }
             return list;
@@ -164,18 +165,25 @@ public final class TrapRecipe implements Recipe<DynamicTrapBlockEntity> {
 
         @Override
         public @Nullable TrapRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf byteBuf) {
-            ResourceLocation trapId = byteBuf.readResourceLocation();
-            int preparationTime = byteBuf.readInt();
-            int ingredientsCount = byteBuf.readInt();
-            NonNullList<Ingredient> ingredients = NonNullList.create();
+            try {
+                ResourceLocation trapId = byteBuf.readResourceLocation();
+                int preparationTime = byteBuf.readInt();
+                int ingredientsCount = byteBuf.readInt();
 
-            for(int j = 0; j < ingredientsCount; ++j) {
-                ingredients.set(j, Ingredient.fromNetwork(byteBuf));
+                if (ingredientsCount != 9)
+                    throw new IllegalArgumentException("Tried reading Apocalypse trap recipe from network, but got invalid ingredient count of " + ingredientsCount);
+
+                NonNullList<Ingredient> ingredients = NonNullList.withSize(MAX_INGREDIENTS, Ingredient.EMPTY);
+
+                for (int j = 0; j < ingredientsCount; ++j) {
+                    ingredients.set(j, Ingredient.fromNetwork(byteBuf));
+                }
+                return new TrapRecipe(id, ModRegistries.TRAP_ACTIONS_REGISTRY.get().getValue(trapId), preparationTime, ingredients);
             }
-            for (int i = ingredients.size(); i < TrapRecipe.MAX_INGREDIENTS; i++) {
-                ingredients.add(Ingredient.EMPTY);
+            catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
-            return new TrapRecipe(id, ModRegistries.TRAP_ACTIONS_REGISTRY.get().getValue(trapId), preparationTime, ingredients);
         }
 
         @Override
