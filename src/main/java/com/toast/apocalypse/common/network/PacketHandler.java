@@ -4,6 +4,8 @@ import com.toast.apocalypse.common.core.Apocalypse;
 import com.toast.apocalypse.common.network.message.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.NaturalSpawner;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
@@ -21,7 +23,7 @@ public class PacketHandler {
      *  using when sending messages. */
     public static final SimpleChannel CHANNEL = createChannel();
 
-    private int messageIndex;
+    private static int messageIndex;
 
     private static SimpleChannel createChannel() {
         return NetworkRegistry.ChannelBuilder
@@ -51,7 +53,7 @@ public class PacketHandler {
     }
 
     public <MSG> void registerMessage(Class<MSG> messageType, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {
-        CHANNEL.registerMessage(this.messageIndex++, messageType, encoder, decoder, messageConsumer, Optional.empty());
+        CHANNEL.registerMessage(messageIndex++, messageType, encoder, decoder, messageConsumer, Optional.empty());
     }
 
     /**

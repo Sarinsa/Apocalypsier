@@ -25,6 +25,7 @@ import com.toast.apocalypse.common.tag.ApocalypseEntityTags;
 import com.toast.apocalypse.common.triggers.ApocalypseTriggers;
 import com.toast.apocalypse.common.util.RainDamageTickHelper;
 import com.toast.apocalypse.common.util.VersionCheckHelper;
+import io.netty.handler.codec.DecoderException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -88,9 +89,6 @@ public class Apocalypse {
         ApocalypseEntityTags.init();
         ApocalypseBlockTags.init();
 
-        // Wahoo
-        packetHandler.registerMessages();
-
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Misc events
@@ -138,6 +136,7 @@ public class Apocalypse {
     }
 
     public void onCommonSetup(FMLCommonSetupEvent event) {
+        packetHandler.registerMessages();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {
