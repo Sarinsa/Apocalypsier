@@ -234,17 +234,18 @@ public final class PlayerDifficultyManager {
                 }
 
                 // Update world info
-                for (ServerLevel level : server.getAllLevels()) {
-                    WorldInfo info = worldInfo.get(level);
+                if (!worldInfo.isEmpty()) {
+                    for (ServerLevel level : server.getAllLevels()) {
+                        WorldInfo info = worldInfo.get(level);
 
-                    if (level.isRaining()) {
-                        if (!info.justStartedRaining()) {
-                            info.setJustStartedRaining(true, level.random);
+                        if (level.isRaining()) {
+                            if (!info.justStartedRaining()) {
+                                info.setJustStartedRaining(true, level.random);
+                            }
+                        } else {
+                            info.setJustStartedRaining(false, level.random);
+                            info.setRainingAcid(false);
                         }
-                    }
-                    else {
-                        info.setJustStartedRaining(false, level.random);
-                        info.setRainingAcid(false);
                     }
                 }
             }
