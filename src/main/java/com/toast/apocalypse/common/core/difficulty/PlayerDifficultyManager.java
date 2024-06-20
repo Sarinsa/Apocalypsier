@@ -238,6 +238,9 @@ public final class PlayerDifficultyManager {
                     for (ServerLevel level : server.getAllLevels()) {
                         WorldInfo info = worldInfo.get(level);
 
+                        if (info == null)
+                            continue;
+
                         if (level.isRaining()) {
                             if (!info.justStartedRaining()) {
                                 info.setJustStartedRaining(true, level.random);
