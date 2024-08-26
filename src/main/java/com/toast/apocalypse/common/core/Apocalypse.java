@@ -7,7 +7,6 @@ import com.toast.apocalypse.api.plugin.IApocalypsePlugin;
 import com.toast.apocalypse.api.plugin.RegistryHelper;
 import com.toast.apocalypse.common.command.CommandRegister;
 import com.toast.apocalypse.common.command.argument.ApocalypseArgumentTypes;
-import com.toast.apocalypse.common.compat.top.TOPEntityInfoProvider;
 import com.toast.apocalypse.common.core.config.ApocalypseClientConfig;
 import com.toast.apocalypse.common.core.config.ApocalypseCommonConfig;
 import com.toast.apocalypse.common.core.config.ApocalypseServerConfig;
@@ -179,10 +178,7 @@ public class Apocalypse {
     }
 
     public void sendIMCMessages(InterModEnqueueEvent event) {
-        // Compat for TheOneProbe
-        if (ModList.get().isLoaded("theoneprobe")) {
-            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPEntityInfoProvider::new);
-        }
+
     }
 
     public static ResourceLocation resourceLoc(String path) {

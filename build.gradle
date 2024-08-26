@@ -97,15 +97,13 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("curse.maven:configured-457570:${configured_version}")
-
     // compile against the JEI API but do not include it at runtime
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}"))
 
-    implementation fg.deobf("curse.maven:top-245211:${top_version}")
+    implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }

@@ -182,9 +182,6 @@ public class ApocalypseCommonConfig {
         private final ForgeConfigSpec.BooleanValue pauseDaylightCycle;
 
 
-        // Compat
-        private final ForgeConfigSpec.BooleanValue requireExtendedProbe;
-
 
         private Common(ForgeConfigSpec.Builder configBuilder) {
             configBuilder.push("version_check");
@@ -226,7 +223,7 @@ public class ApocalypseCommonConfig {
                     .define("averageGroupDifficulty", false);
 
             this.mobDifficulties = configBuilder.comment("A list of mobs that can only start spawning naturally when the nearest player has reached a certain difficulty")
-                    .define("mobDifficulties", this.createDefaultDifficultyMobs());
+                    .define("mobDifficulties", createDefaultMobDifficulties());
             configBuilder.pop();
 
             configBuilder.comment("This section revolves around everything related to the full moon sieges.");
@@ -462,11 +459,6 @@ public class ApocalypseCommonConfig {
             this.pauseDaylightCycle = configBuilder.comment("(For dedicated servers) If enabled, the day-night cycle will pause if no players are online.")
                     .comment("Useful if you want your players to be unable to just skip through full moons by disconnecting.")
                     .define("pauseDaylightCycle", true);
-            configBuilder.pop();
-
-            configBuilder.push("compat");
-            this.requireExtendedProbe = configBuilder.comment("(Option for TheOneProbe) If enabled, difficulty can only be seen when the probe is in extended mode.")
-                            .define("requireExtendedProbe", true);
             configBuilder.pop();
         }
 
@@ -798,15 +790,6 @@ public class ApocalypseCommonConfig {
 
 
 
-        //
-        // COMPAT
-        //
-        public boolean requireExtendedProbe() {
-            return this.requireExtendedProbe.get();
-        }
-
-
-
 
 
         private void createStartDifficulty(Class<? extends IFullMoonMob> entityClass, String name, long defaultStart, ForgeConfigSpec.Builder configBuilder) {
@@ -827,7 +810,7 @@ public class ApocalypseCommonConfig {
 
 
         /** Creates the default difficulty mob config. */
-        private CommentedConfig createDefaultDifficultyMobs() {
+        private CommentedConfig createDefaultMobDifficulties() {
             CommentedConfig difficultyMobs = TomlFormat.newConfig();
             difficultyMobs.add(String.valueOf(40), ApocalypseEntities.FEARWOLF.getId().toString());
             return difficultyMobs;
