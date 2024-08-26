@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,7 +58,7 @@ public class Fearwolf extends Monster implements Enemy {
     }
 
     public static boolean checkFearwolfSpawnRules(EntityType<? extends Fearwolf> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK) && level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(50.0D)).isEmpty();
+        return level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(40.0D)).isEmpty();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
