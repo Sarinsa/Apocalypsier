@@ -44,12 +44,12 @@ public class GhostModel<T extends Ghost> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void setupAnim(T ghost, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(T ghost, float limbSwing, float limbSwingAmount, float partialTick, float netHeadYaw, float headPitch) {
         head.yRot = netHeadYaw * (float) Math.PI / 180.0F;
         head.xRot = headPitch * (float) Math.PI / 180.0F;
 
         if (!ghost.isFrozen()) {
-            bobArmsAndHead(rightArm, leftArm, head, ageInTicks);
+            bobArmsAndHead(rightArm, leftArm, head, partialTick);
         }
     }
 
@@ -63,7 +63,7 @@ public class GhostModel<T extends Ghost> extends HierarchicalModel<T> {
         return body;
     }
 
-    private static void bobArmsAndHead(ModelPart rightArm, ModelPart leftArm, ModelPart head, float ageInTicks) {
+    private static void bobArmsAndHead(ModelPart rightArm, ModelPart leftArm, ModelPart head, float partialTick) {
         float f = Mth.sin(1 * (float)Math.PI);
         float f1 = Mth.sin((float) Math.PI);
         leftArm.zRot = 0.0F;
@@ -75,7 +75,7 @@ public class GhostModel<T extends Ghost> extends HierarchicalModel<T> {
         rightArm.xRot = f2;
         leftArm.xRot += f * 1.2F - f1 * 0.4F;
         rightArm.xRot += f * 1.2F - f1 * 0.4F;
-        AnimationUtils.bobArms(rightArm, leftArm, ageInTicks);
+        AnimationUtils.bobArms(rightArm, leftArm, partialTick);
     }
 
     public void setRotationAngle(ModelPart modelPart, float x, float y, float z) {

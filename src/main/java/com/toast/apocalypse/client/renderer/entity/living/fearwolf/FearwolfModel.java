@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.toast.apocalypse.common.entity.living.Fearwolf;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -17,6 +18,7 @@ import net.minecraft.util.Mth;
  */
 public class FearwolfModel <T extends Fearwolf> extends EntityModel<T> {
 
+    WolfModel
     private final ModelPart head;
     private final ModelPart realHead;
     private final ModelPart body;
@@ -27,7 +29,8 @@ public class FearwolfModel <T extends Fearwolf> extends EntityModel<T> {
     private final ModelPart tail;
     private final ModelPart realTail;
     private final ModelPart upperBody;
-    private static final int LEG_SIZE = 8;
+
+
 
     public FearwolfModel(ModelPart root) {
         this.head = root.getChild("head");
@@ -61,7 +64,7 @@ public class FearwolfModel <T extends Fearwolf> extends EntityModel<T> {
     }
 
     @Override
-    public void prepareMobModel(T fearwolf, float p_104133_, float p_104134_, float p_104135_) {
+    public void prepareMobModel(T fearwolf, float position, float speed, float partialTick) {
         this.tail.yRot = 0.0F;
 
         this.body.setPos(0.0F, 14.0F, 2.0F);
@@ -73,16 +76,16 @@ public class FearwolfModel <T extends Fearwolf> extends EntityModel<T> {
         this.leftHindLeg.setPos(0.5F, 16.0F, 7.0F);
         this.rightFrontLeg.setPos(-2.5F, 16.0F, -4.0F);
         this.leftFrontLeg.setPos(0.5F, 16.0F, -4.0F);
-        this.rightHindLeg.xRot = Mth.cos(p_104133_ * 0.6662F) * 1.4F * p_104134_;
-        this.leftHindLeg.xRot = Mth.cos(p_104133_ * 0.6662F + (float)Math.PI) * 1.4F * p_104134_;
-        this.rightFrontLeg.xRot = Mth.cos(p_104133_ * 0.6662F + (float)Math.PI) * 1.4F * p_104134_;
-        this.leftFrontLeg.xRot = Mth.cos(p_104133_ * 0.6662F) * 1.4F * p_104134_;
+        this.rightHindLeg.xRot = Mth.cos(position * 0.6662F) * 1.4F * speed;
+        this.leftHindLeg.xRot = Mth.cos(position * 0.6662F + (float)Math.PI) * 1.4F * speed;
+        this.rightFrontLeg.xRot = Mth.cos(position * 0.6662F + (float)Math.PI) * 1.4F * speed;
+        this.leftFrontLeg.xRot = Mth.cos(position * 0.6662F) * 1.4F * speed;
     }
 
     @Override
-    public void setupAnim(T fearwolf, float p_104138_, float p_104139_, float p_104140_, float p_104141_, float p_104142_) {
-        this.head.xRot = p_104142_ * ((float)Math.PI / 180F);
-        this.head.yRot = p_104141_ * ((float)Math.PI / 180F);
+    public void setupAnim(T fearwolf, float limbSwing, float limbSwingAmount, float partialTick, float netHeadYaw, float headPitch) {
+        this.head.xRot = headPitch * ((float)Math.PI / 180F);
+        this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
     }
 
     @Override
