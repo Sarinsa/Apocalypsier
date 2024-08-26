@@ -18,7 +18,6 @@ import net.minecraft.util.Mth;
  */
 public class FearwolfModel <T extends Fearwolf> extends EntityModel<T> {
 
-    WolfModel
     private final ModelPart head;
     private final ModelPart realHead;
     private final ModelPart body;
