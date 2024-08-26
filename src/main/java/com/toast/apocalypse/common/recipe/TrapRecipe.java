@@ -96,7 +96,7 @@ public final class TrapRecipe implements Recipe<DynamicTrapBlockEntity> {
 
     @Override
     public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Nonnull
