@@ -175,20 +175,21 @@ public class EntityEvents {
 
         for (CommentedConfig.Entry entry : config.entrySet()) {
             String key = entry.getKey();
+            String value = entry.getValue();
 
-            if (!StringUtils.isNumeric(key)) {
-                logError("Invalid mob difficulty entry \"{}\" found. A mob difficulty entry's key must be a number representing the target difficulty level");
+            if (!StringUtils.isNumeric(value)) {
+                logError("Invalid mob difficulty entry \"{}\" found. A mob difficulty entry value must be a number representing the target difficulty level");
                 continue;
             }
-            ResourceLocation entityId = ResourceLocation.tryParse(entry.getValue());
-            double difficulty = Double.parseDouble(key);
+            ResourceLocation entityId = ResourceLocation.tryParse(key);
+            double difficulty = Double.parseDouble(value);
 
             if (difficulty <= 0) {
-                logError("Invalid mob difficulty entry \"{}\" found. The mob difficulty entry key must be a positive number representing the target difficulty level.");
+                logError("Invalid mob difficulty entry \"{}\" found. The mob difficulty entry value must be a number greater than or equal to 0.");
                 continue;
             }
             if (entityId == null) {
-                logError("Invalid mob difficulty for entry \"{}\" found. Entry name must be an entity ID.", key);
+                logError("Invalid mob difficulty for entry \"{}\" found. Entry key must be the registry ID of the desired entity type.", key);
                 continue;
             }
             EntityType<?> entityType;
@@ -197,14 +198,24 @@ public class EntityEvents {
                 entityType = ForgeRegistries.ENTITY_TYPES.getValue(entityId);
             }
             else {
-                logError("Found mob difficulty entry with a entity ID that does not exist in the Forge registry: {}. This mob difficulty entry will not be loaded.", entityId);
+                logError("Found mob difficulty entry with a entity ID that does not exist in the registry: {}. This mob difficulty entry will not be loaded.", entityId);
                 continue;
             }
-            MOB_DIFFICULTIES.put(entityType, difficulty);
+
+            if (MOB_DIFFICULTIES.containsKey(entityType)) {
+                logWarning("Duplicate mob difficulty entry found for entity ID {}, skipping");
+            }
+            else {
+                MOB_DIFFICULTIES.put(entityType, difficulty);
+            }
         }
     }
 
     private static void logError(String message, Object... args) {
         Apocalypse.LOGGER.error("[Apocalypse Config] " + message, args);
+    }
+
+    private static void logWarning(String message, Object... args) {
+        Apocalypse.LOGGER.warn("[Apocalypse Config] " + message, args);
     }
 }

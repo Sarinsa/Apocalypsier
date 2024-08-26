@@ -222,7 +222,8 @@ public class ApocalypseCommonConfig {
             this.averageGroupDifficulty = configBuilder.comment("(Currently unused) If enabled, players that are close to each other will have the average of their difficulty added together used instead of the nearby player with the highest difficulty.")
                     .define("averageGroupDifficulty", false);
 
-            this.mobDifficulties = configBuilder.comment("A list of mobs that can only start spawning naturally when the nearest player has reached a certain difficulty")
+            this.mobDifficulties = configBuilder.comment("A list of mobs that can only start spawning naturally when the nearest player has reached a certain difficulty. Entries must consist of the registry ID of the entity type "
+                    + "in question as well as an integer representing the target difficulty, for example \"minecraft:creeper = 40\"")
                     .define("mobDifficulties", createDefaultMobDifficulties());
             configBuilder.pop();
 
@@ -812,7 +813,7 @@ public class ApocalypseCommonConfig {
         /** Creates the default difficulty mob config. */
         private CommentedConfig createDefaultMobDifficulties() {
             CommentedConfig difficultyMobs = TomlFormat.newConfig();
-            difficultyMobs.add(String.valueOf(40), ApocalypseEntities.FEARWOLF.getId().toString());
+            difficultyMobs.add(ApocalypseEntities.FEARWOLF.getId().toString(), String.valueOf(40));
             return difficultyMobs;
         }
 
