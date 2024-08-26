@@ -13,6 +13,7 @@ import com.toast.apocalypse.common.util.References;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -81,6 +82,14 @@ public class DynamicTrapBlockEntity extends BaseContainerBlockEntity {
         if (trap.currentTrap == null) {
             if (trap.findValidRecipe()) {
                 trap.updateTrapBlock(DynamicTrapBlock.TrapState.PROCESSING);
+
+                if (level.getGameTime() % 2 == 0) {
+                    double x = pos.getX() + 0.5D;
+                    double y = pos.getY() + 1.0D;
+                    double z = pos.getZ() + 0.5D;
+
+                    ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, x, y, z, 1,0.0D, 0.0D, 0.0D, 0.0D);
+                }
 
                 if (++trap.preparationTime >= trap.maxPreparationTime) {
                     trap.setCurrentTrap(trap.currentRecipe.getResultTrap());
